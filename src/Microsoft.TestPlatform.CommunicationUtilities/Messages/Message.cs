@@ -27,4 +27,11 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             return "(" + MessageType + ") -> " + (Payload == null ? "null" : Payload.ToString(Formatting.Indented));
         }
     }
+
+    public class Message2
+    {
+        public string MessageType { get; set; }
+
+        public object Payload { get; set; }
+    }
 }

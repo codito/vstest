@@ -33,8 +33,8 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// </summary>
         private const int LaunchProcessWithDebuggerTimeout = 5 * 1000;
 
-        public TestRequestHandler()
-            : this(new SocketCommunicationManager(), JsonDataSerializer.Instance)
+        public TestRequestHandler() : this(new SocketCommunicationManager2(), null)
+            //: this(new SocketCommunicationManager(), JsonDataSerializer.Instance)
         {
         }
 
