@@ -190,6 +190,8 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <returns>Returns message read from the binary reader</returns>
         public Message ReceiveMessage()
         {
+            var token = new CancellationTokenSource();
+            this.TryReceiveRawMessage(token.Token);
             return this.dataSerializer.DeserializeMessage(string.Empty);
         }
 
@@ -273,9 +275,8 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             //return str;
         }
 
-        private string TryReceiveRawMessage(CancellationToken cancellationToken)
+        private void TryReceiveRawMessage(CancellationToken cancellationToken)
         {
-            string str = null;
             bool success = false;
 
             // Set read timeout to avoid blocking receive raw message
@@ -285,7 +286,6 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                 {
                     if (this.socket.Poll(StreamReadTimeout, SelectMode.SelectRead))
                     {
-                        str = this.ReceiveRawMessage();
                         success = true;
                     }
                 }
@@ -315,8 +315,6 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                     break;
                 }
             }
-
-            return str;
         }
     }
 }

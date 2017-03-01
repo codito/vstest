@@ -116,8 +116,8 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                 var client = await this.tcpListener.AcceptTcpClientAsync();
                 this.socket = client.Client;
                 this.stream = client.GetStream();
-                this.binaryReader = new BinaryReader(this.stream);
-                this.binaryWriter = new BinaryWriter(this.stream);
+                this.binaryReader = new BinaryReader(this.stream, System.Text.Encoding.UTF8);
+                this.binaryWriter = new BinaryWriter(this.stream, System.Text.Encoding.UTF8);
 
                 this.clientConnectedEvent.Set();
 
@@ -351,7 +351,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             // Need to sync one by one to avoid buffer corruption
             lock (this.sendSyncObject)
             {
-                this.binaryWriter?.Write(rawMessage);
+                this.binaryWriter?.Write(System.Text.Encoding.UTF8.GetBytes(rawMessage));
                 this.binaryWriter?.Flush();
             }
         }

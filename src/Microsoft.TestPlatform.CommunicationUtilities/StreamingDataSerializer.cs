@@ -5,6 +5,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 {
     using System;
     using System.IO;
+    using System.Text;
 
     using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Interfaces;
     using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.ObjectModel;
@@ -14,14 +15,12 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 
     public class StreamingDataSerializer : IDataSerializer
     {
-        private readonly JsonWriter jsonWriter;
-        private readonly JsonReader jsonReader;
+        private readonly Stream stream;
         private readonly JsonSerializer serializer;
 
         public StreamingDataSerializer(Stream stream)
         {
-            this.jsonWriter = new JsonTextWriter(new StreamWriter(stream));
-            this.jsonReader = new JsonTextReader(new StreamReader(stream));
+            this.stream = stream;
             this.serializer = JsonSerializer.Create(
                             new JsonSerializerSettings
                                 {
@@ -36,7 +35,14 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <inheritdoc/>
         public Message DeserializeMessage(string rawMessage)
         {
-            return this.serializer.Deserialize<Message>(this.jsonReader);
+            using (var streamReader = new StreamReader(this.stream, System.Text.Encoding.UTF8, true))
+            {
+                using (var jsonReader = new JsonTextReader(streamReader))
+                {
+                    jsonReader.CloseInput = false;
+                    return this.serializer.Deserialize<Message>(jsonReader);
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -60,14 +66,28 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <inheritdoc/>
         public string SerializeMessage(string messageType)
         {
-            this.serializer.Serialize(this.jsonWriter, new Message2 { MessageType = messageType, Payload = null });
+            using (var streamWriter = new StreamWriter(this.stream, System.Text.Encoding.UTF8, 1024, true))
+            {
+                using (var jsonWriter = new JsonTextWriter(streamWriter))
+                {
+                    jsonWriter.CloseOutput = false;
+                    this.serializer.Serialize(jsonWriter, new Message2 { MessageType = messageType, Payload = null });
+                }
+            }
             return string.Empty;
         }
 
         /// <inheritdoc/>
         public string SerializePayload(string messageType, object payload)
         {
-            this.serializer.Serialize(this.jsonWriter, new Message2 { MessageType = messageType, Payload = payload });
+            using (var streamWriter = new StreamWriter(this.stream, System.Text.Encoding.UTF8, 1024, true))
+            {
+                using (var jsonWriter = new JsonTextWriter(streamWriter))
+                {
+                    jsonWriter.CloseOutput = false;
+                    this.serializer.Serialize(jsonWriter, new Message2 { MessageType = messageType, Payload = payload });
+                }
+            }
             return string.Empty;
         }
     }

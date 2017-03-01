@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                     case MessageType.ExecutionInitialize:
                         {
                             EqtTrace.Info("Discovery Session Initialize.");
-                            var pathToAdditionalExtensions = message.Payload.ToObject<IEnumerable<string>>();
+                            var pathToAdditionalExtensions = message.Payload.ToObject<List<string>>();
                             jobQueue.QueueJob(
                                 () =>
                                 testHostManagerFactory.GetExecutionManager().Initialize(pathToAdditionalExtensions), 0);
