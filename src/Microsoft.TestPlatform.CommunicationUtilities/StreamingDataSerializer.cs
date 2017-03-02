@@ -3,7 +3,6 @@
 
 namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 {
-    using System;
     using System.IO;
     using System.Text;
 
@@ -12,6 +11,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
     using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Serialization;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
 
     public class StreamingDataSerializer : IDataSerializer
     {
@@ -30,17 +30,22 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                                     DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                                     TypeNameHandling = TypeNameHandling.None
                                 });
+#if DEBUG
+            // MemoryTraceWriter can help diagnose serialization issues. Enable it for
+            // debug builds only.
+            serializer.TraceWriter = new MemoryTraceWriter();
+#endif
         }
 
         /// <inheritdoc/>
         public Message DeserializeMessage(string rawMessage)
         {
-            using (var streamReader = new StreamReader(this.stream, System.Text.Encoding.UTF8, true))
+            using (var binaryReader = new BinaryReader(this.stream, Encoding.UTF8, true))
             {
-                using (var jsonReader = new JsonTextReader(streamReader))
+                using (var reader = new JsonTextReader(new StringReader(binaryReader.ReadString())))
                 {
-                    jsonReader.CloseInput = false;
-                    return this.serializer.Deserialize<Message>(jsonReader);
+                    reader.CloseInput = false;
+                    return this.serializer.Deserialize<Message>(reader);
                 }
             }
         }
@@ -66,12 +71,16 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <inheritdoc/>
         public string SerializeMessage(string messageType)
         {
-            using (var streamWriter = new StreamWriter(this.stream, System.Text.Encoding.UTF8, 1024, true))
+            using (var stringWriter = new StringWriter())
             {
-                using (var jsonWriter = new JsonTextWriter(streamWriter))
+                using (var writer = new JsonTextWriter(stringWriter))
                 {
-                    jsonWriter.CloseOutput = false;
-                    this.serializer.Serialize(jsonWriter, new Message2 { MessageType = messageType, Payload = null });
+                    this.serializer.Serialize(writer, new Message2 { MessageType = messageType, Payload = null });
+
+                    using (var binaryWriter = new BinaryWriter(this.stream, Encoding.UTF8, true))
+                    {
+                        binaryWriter.Write(stringWriter.ToString());
+                    }
                 }
             }
             return string.Empty;
@@ -80,12 +89,16 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <inheritdoc/>
         public string SerializePayload(string messageType, object payload)
         {
-            using (var streamWriter = new StreamWriter(this.stream, System.Text.Encoding.UTF8, 1024, true))
+            using (var stringWriter = new StringWriter())
             {
-                using (var jsonWriter = new JsonTextWriter(streamWriter))
+                using (var writer = new JsonTextWriter(stringWriter))
                 {
-                    jsonWriter.CloseOutput = false;
-                    this.serializer.Serialize(jsonWriter, new Message2 { MessageType = messageType, Payload = payload });
+                    this.serializer.Serialize(writer, new Message2 { MessageType = messageType, Payload = payload });
+
+                    using (var binaryWriter = new BinaryWriter(this.stream, Encoding.UTF8, true))
+                    {
+                        binaryWriter.Write(stringWriter.ToString());
+                    }
                 }
             }
             return string.Empty;
