@@ -15,9 +15,14 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 
     /// <summary>
     /// Facilitates communication using sockets
-    /// </summary>    
+    /// </summary>
     public class SocketCommunicationManager2 : ICommunicationManager
     {
+        /// <summary>
+        /// The server stream read timeout constant (in microseconds).
+        /// </summary>
+        private const int STREAMREADTIMEOUT = 1000 * 1000;
+
         /// <summary>
         /// TCP Listener to host TCP channel and listen
         /// </summary>
@@ -38,14 +43,13 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// </summary>
         private ManualResetEvent clientConnectedEvent = new ManualResetEvent(false);
 
-
         /// <summary>
         /// Event used to maintain client connection state
         /// </summary>
         private ManualResetEvent clientConnectionAcceptedEvent = new ManualResetEvent(false);
 
         /// <summary>
-        /// Sync object for sending messages 
+        /// Sync object for sending messages
         /// SendMessage over socket channel is NOT thread-safe
         /// </summary>
         private object sendSyncObject = new object();
@@ -56,11 +60,6 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         private NetworkStream stream;
 
         private Socket socket;
-
-        /// <summary>
-        /// The server stream read timeout constant (in microseconds).
-        /// </summary>
-        private const int StreamReadTimeout = 1000 * 1000;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SocketCommunicationManager"/> class.
@@ -151,7 +150,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 
         /// <summary>
         /// Waits for server to be connected
-        /// Whoever creating the client and trying to connect to a server 
+        /// Whoever creating the client and trying to connect to a server
         /// should use this method to wait for connection to be established with server
         /// </summary>
         /// <param name="connectionTimeout">Time to wait for the connection</param>
@@ -245,25 +244,25 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         public async Task<Message> ReceiveMessageAsync(CancellationToken cancellationToken)
         {
             return await Task.Run(() => new Message());
-            //throw new NotImplementedException();
-            //var task = await Task.Run(() => this.dataSerializer.DeserializeMessage(string.Empty));
-            //return task;
+            ////throw new NotImplementedException();
+            ////var task = await Task.Run(() => this.dataSerializer.DeserializeMessage(string.Empty));
+            ////return task;
         }
 
         /// <summary>
-        /// Reads message from the binary reader using read timeout 
+        /// Reads message from the binary reader using read timeout
         /// </summary>
         /// <param name="cancellationToken">
         /// The cancellation Token.
         /// </param>
         /// <returns>
-        /// Raw message string 
+        /// Raw message string
         /// </returns>
         public async Task<string> ReceiveRawMessageAsync(CancellationToken cancellationToken)
         {
             return await Task.Run(() => string.Empty);
-            //var str = await Task.Run(() => this.TryReceiveRawMessage(cancellationToken));
-            //return str;
+            ////var str = await Task.Run(() => this.TryReceiveRawMessage(cancellationToken));
+            ////return str;
         }
 
         private void TryReceiveRawMessage(CancellationToken cancellationToken)
@@ -275,7 +274,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             {
                 try
                 {
-                    if (this.socket.Poll(StreamReadTimeout, SelectMode.SelectRead))
+                    if (this.socket.Poll(STREAMREADTIMEOUT, SelectMode.SelectRead))
                     {
                         success = true;
                     }

@@ -28,8 +28,9 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 
         private Action<Message> onAckMessageRecieved;
 
-        public TestRequestHandler() : this(new SocketCommunicationManager2(), null)
-            //: this(new SocketCommunicationManager(), JsonDataSerializer.Instance)
+        public TestRequestHandler()
+            : this(new SocketCommunicationManager2(), null)
+            ////: this(new SocketCommunicationManager(), JsonDataSerializer.Instance)
         {
         }
 

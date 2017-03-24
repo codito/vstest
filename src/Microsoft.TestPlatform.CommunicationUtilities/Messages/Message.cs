@@ -28,7 +28,9 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         }
     }
 
+#pragma warning disable SA1402 // File may only contain a single type
     public class Message2
+#pragma warning restore SA1402 // File may only contain a single type
     {
         public string MessageType { get; set; }
 

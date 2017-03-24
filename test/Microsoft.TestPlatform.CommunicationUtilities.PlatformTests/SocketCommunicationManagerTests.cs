@@ -18,15 +18,12 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
     [TestClass]
     public class SocketCommunicationManagerTests : IDisposable
     {
-<<<<<<< HEAD
-=======
         private const string TestDiscoveryStartMessageWithNullPayload = "{\"MessageType\":\"TestDiscovery.Start\",\"Payload\":null}";
 
         private const string TestDiscoveryStartMessageWithDummyPayload = "{\"MessageType\":\"TestDiscovery.Start\",\"Payload\":\"Dummy Payload\"}";
 
         private const string DummyPayload = "Dummy Payload";
 
->>>>>>> upstream/master
         private readonly SocketCommunicationManager communicationManager;
 
         private readonly TcpClient tcpClient;
@@ -111,11 +108,6 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
         {
             var port = this.communicationManager.HostServer();
             var acceptClientTask = this.communicationManager.AcceptClientAsync();
-<<<<<<< HEAD
-            
-=======
-
->>>>>>> upstream/master
             this.communicationManager.StopServer();
 
             Assert.ThrowsException<AggregateException>(() => this.tcpClient.ConnectAsync(IPAddress.Loopback, port).Wait());
@@ -162,14 +154,7 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
         [TestMethod]
         public async Task StopClientShouldDisconnectClient()
         {
-<<<<<<< HEAD
-            var port = this.StartServer();
-            var setupClientTask = this.communicationManager.SetupClientAsync(port);
-            var client = await this.tcpListener.AcceptTcpClientAsync();
-            this.communicationManager.WaitForServerConnection(1000);
-=======
             var client = await this.StartServerAndWaitForConnection();
->>>>>>> upstream/master
 
             this.communicationManager.StopClient();
 
@@ -188,12 +173,7 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
 
             this.communicationManager.SendMessage(MessageType.StartDiscovery);
 
-<<<<<<< HEAD
-            var message = "{\"MessageType\":\"TestDiscovery.Start\",\"Payload\":null}";
-            Assert.AreEqual(message, this.ReadFromStream(client.GetStream()));
-=======
             Assert.AreEqual(TestDiscoveryStartMessageWithNullPayload, this.ReadFromStream(client.GetStream()));
->>>>>>> upstream/master
         }
 
         [TestMethod]
@@ -201,17 +181,6 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
         {
             var client = await this.StartServerAndWaitForConnection();
 
-<<<<<<< HEAD
-            this.communicationManager.SendMessage(MessageType.StartDiscovery, "Dummy Payload");
-
-            var message = "{\"MessageType\":\"TestDiscovery.Start\",\"Payload\":\"Dummy Payload\"}";
-            Assert.AreEqual(message, this.ReadFromStream(client.GetStream()));
-        }
-
-        [TestMethod]
-        public void SendMessageWithRawMessageShouldNotSerializeThePayload()
-        {
-=======
             this.communicationManager.SendMessage(MessageType.StartDiscovery, DummyPayload);
 
             Assert.AreEqual(TestDiscoveryStartMessageWithDummyPayload, this.ReadFromStream(client.GetStream()));
@@ -225,15 +194,12 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
             this.communicationManager.SendRawMessage(DummyPayload);
 
             Assert.AreEqual(DummyPayload, this.ReadFromStream(client.GetStream()));
->>>>>>> upstream/master
         }
 
         #endregion
 
         #region Message receiver tests
 
-<<<<<<< HEAD
-=======
         [TestMethod]
         public async Task ReceiveMessageShouldReceiveDeserializedMessage()
         {
@@ -280,7 +246,6 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
             Assert.AreEqual(DummyPayload, message);
         }
 
->>>>>>> upstream/master
         #endregion
 
         private int StartServer()
@@ -315,8 +280,6 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
                 return reader.ReadString();
             }
         }
-<<<<<<< HEAD
-=======
 
         private void WriteToStream(Stream stream, string data)
         {
@@ -326,6 +289,5 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
                 writer.Flush();
             }
         }
->>>>>>> upstream/master
     }
 }

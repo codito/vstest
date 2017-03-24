@@ -21,19 +21,21 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         public StreamingDataSerializer(Stream stream)
         {
             this.stream = stream;
-            this.serializer = JsonSerializer.Create(
-                            new JsonSerializerSettings
-                                {
-                                    ContractResolver = new TestPlatformContractResolver(),
-                                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                                    DateParseHandling = DateParseHandling.DateTimeOffset,
-                                    DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-                                    TypeNameHandling = TypeNameHandling.None
-                                });
+            this.serializer =
+                JsonSerializer.Create(
+                    new JsonSerializerSettings
+                        {
+                            ContractResolver = new TestPlatformContractResolver(),
+                            DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                            DateParseHandling = DateParseHandling.DateTimeOffset,
+                            DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                            TypeNameHandling = TypeNameHandling.None
+                        });
 #if DEBUG
+
             // MemoryTraceWriter can help diagnose serialization issues. Enable it for
             // debug builds only.
-            serializer.TraceWriter = new MemoryTraceWriter();
+            this.serializer.TraceWriter = new MemoryTraceWriter();
 #endif
         }
 
@@ -61,9 +63,8 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             }
             else
             {
-                data = message.Payload.ToObject<T>(serializer);
+                data = message.Payload.ToObject<T>(this.serializer);
             }
-
 
             return data;
         }
@@ -83,6 +84,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                     }
                 }
             }
+
             return string.Empty;
         }
 
@@ -101,6 +103,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                     }
                 }
             }
+
             return string.Empty;
         }
     }

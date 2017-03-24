@@ -216,15 +216,6 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         }
 
         /// <summary>
-        /// Reads message from the binary reader
-        /// </summary>
-        /// <returns> Raw message string </returns>
-        public string ReceiveRawMessage()
-        {
-            return this.binaryReader.ReadString();
-        }
-
-        /// <summary>
         /// Send serialized raw message
         /// </summary>
         /// <param name="rawMessage">serialized message</param>
