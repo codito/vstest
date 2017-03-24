@@ -15,9 +15,14 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 
     /// <summary>
     /// Facilitates communication using sockets
-    /// </summary>    
+    /// </summary>
     public class SocketCommunicationManager : ICommunicationManager
     {
+        /// <summary>
+        /// The server stream read timeout constant (in microseconds).
+        /// </summary>
+        private const int STREAMREADTIMEOUT = 1000 * 1000;
+
         /// <summary>
         /// TCP Listener to host TCP channel and listen
         /// </summary>
@@ -48,14 +53,13 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// </summary>
         private ManualResetEvent clientConnectedEvent = new ManualResetEvent(false);
 
-
         /// <summary>
         /// Event used to maintain client connection state
         /// </summary>
         private ManualResetEvent clientConnectionAcceptedEvent = new ManualResetEvent(false);
 
         /// <summary>
-        /// Sync object for sending messages 
+        /// Sync object for sending messages
         /// SendMessage over socket channel is NOT thread-safe
         /// </summary>
         private object sendSyncObject = new object();
@@ -68,14 +72,10 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         private Socket socket;
 
         /// <summary>
-        /// The server stream read timeout constant (in microseconds).
-        /// </summary>
-        private const int StreamReadTimeout = 1000 * 1000;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SocketCommunicationManager"/> class.
         /// </summary>
-        public SocketCommunicationManager() : this(JsonDataSerializer.Instance)
+        public SocketCommunicationManager()
+            : this(JsonDataSerializer.Instance)
         {
         }
 
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <summary>
         /// Host TCP Socket Server and start listening
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Port of the listener</returns>
         public int HostServer()
         {
             var endpoint = new IPEndPoint(IPAddress.Loopback, 0);
@@ -106,6 +106,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <summary>
         /// Accepts client async
         /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task AcceptClientAsync()
         {
             if (this.tcpListener != null)
@@ -152,6 +153,8 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <summary>
         /// Connects to server async
         /// </summary>
+        /// <param name="portNumber">Port number for client to connect</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task SetupClientAsync(int portNumber)
         {
             this.clientConnectionAcceptedEvent.Reset();
@@ -168,7 +171,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 
         /// <summary>
         /// Waits for server to be connected
-        /// Whoever creating the client and trying to connect to a server 
+        /// Whoever creating the client and trying to connect to a server
         /// should use this method to wait for connection to be established with server
         /// </summary>
         /// <param name="connectionTimeout">Time to wait for the connection</param>
@@ -202,16 +205,6 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         }
 
         /// <summary>
-        /// Reads message from the binary reader
-        /// </summary>
-        /// <returns>Returns message read from the binary reader</returns>
-        public Message ReceiveMessage()
-        {
-            var rawMessage = this.ReceiveRawMessage();
-            return this.dataSerializer.DeserializeMessage(rawMessage);
-        }
-
-        /// <summary>
         ///  Writes message to the binary writer with payload
         /// </summary>
         /// <param name="messageType">Type of Message to be sent, for instance TestSessionStart</param>
@@ -241,14 +234,13 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         }
 
         /// <summary>
-        /// Deserializes the Message into actual TestPlatform objects
+        /// Reads message from the binary reader
         /// </summary>
-        /// <typeparam name="T"> The type of object to deserialize to. </typeparam>
-        /// <param name="message"> Message object </param>
-        /// <returns> TestPlatform object </returns>
-        public T DeserializePayload<T>(Message message)
+        /// <returns>Returns message read from the binary reader</returns>
+        public Message ReceiveMessage()
         {
-            return this.dataSerializer.DeserializePayload<T>(message);
+            var rawMessage = this.ReceiveRawMessage();
+            return this.dataSerializer.DeserializeMessage(rawMessage);
         }
 
         /// <summary>
@@ -272,18 +264,38 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         }
 
         /// <summary>
-        /// Reads message from the binary reader using read timeout 
+        /// Reads message from the binary reader
+        /// </summary>
+        /// <returns> Raw message string </returns>
+        public string ReceiveRawMessage()
+        {
+            return this.binaryReader.ReadString();
+        }
+
+        /// <summary>
+        /// Reads message from the binary reader using read timeout
         /// </summary>
         /// <param name="cancellationToken">
         /// The cancellation Token.
         /// </param>
         /// <returns>
-        /// Raw message string 
+        /// Raw message string
         /// </returns>
         public async Task<string> ReceiveRawMessageAsync(CancellationToken cancellationToken)
         {
             var str = await Task.Run(() => this.TryReceiveRawMessage(cancellationToken));
             return str;
+        }
+
+        /// <summary>
+        /// Deserializes the Message into actual TestPlatform objects
+        /// </summary>
+        /// <typeparam name="T"> The type of object to deserialize to. </typeparam>
+        /// <param name="message"> Message object </param>
+        /// <returns> TestPlatform object </returns>
+        public T DeserializePayload<T>(Message message)
+        {
+            return this.dataSerializer.DeserializePayload<T>(message);
         }
 
         private string TryReceiveRawMessage(CancellationToken cancellationToken)
@@ -296,7 +308,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             {
                 try
                 {
-                    if (this.socket.Poll(StreamReadTimeout, SelectMode.SelectRead))
+                    if (this.socket.Poll(STREAMREADTIMEOUT, SelectMode.SelectRead))
                     {
                         str = this.ReceiveRawMessage();
                         success = true;

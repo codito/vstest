@@ -4,9 +4,13 @@
     <TestPlatformRoot Condition="$(TestPlatformRoot) == ''">$(MSBuildThisFileDirectory)../../</TestPlatformRoot>
   </PropertyGroup>
   <PropertyGroup>
-    <!-- Versioning is defined from the build script. Use a default dev build if it's not defined. -->
-    <Version Condition="'$(Version)' == ''">15.1.0</Version>
-    <VersionSuffix Condition="'$(VersionSuffix)' == ''">dev</VersionSuffix>
+    <!-- Versioning is defined from the build script. Use a default dev build if it's not defined.
+         Sets the AssemblyVersion, AssemblyFileVersion and AssemblyInformationalVersion -->
+    <Version Condition="'$(Version)' == ''">15.1.0-dev</Version>
+
+    <!-- Override the AssemblyVersion as 15.0.0 since protocol depends on this version for
+         serialization. This is also defined in build script. -->
+    <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">15.0.0</AssemblyVersion>
 
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <PublicSign Condition="'$(CIBuild)' == '' or '$(CIBuild)' == 'false'">true</PublicSign>
@@ -35,13 +39,6 @@
   <Import Project="$(MSBuildThisFileDirectory)TestPlatform.Dependencies.props" />
 
   <!-- Common dependencies for all projects -->
-  <ItemGroup>
-    <!--<PackageReference Include="StyleCop.Analyzers">-->
-      <!--<Version>1.0.0</Version>-->
-      <!--<PrivateAssets>All</PrivateAssets>-->
-    <!--</PackageReference>-->
-  </ItemGroup>
-
   <ItemGroup>
     <AdditionalFiles Include="$(TestPlatformRoot)scripts\stylecop.json">
       <Link>stylecop.json</Link>
@@ -94,7 +91,11 @@
 
   <!-- Code analysis settings -->
   <PropertyGroup>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <!-- Disable code analysis by default. Ignore SA0001 until we've xml documentation enabled for
+         all projects -->
+    <EnableCodeAnalysis>false</EnableCodeAnalysis>
+    <NoWarn>$(NoWarn);SA0001</NoWarn>
+
     <CodeAnalysisRuleSet>$(TestPlatformRoot)scripts/stylecop.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSet Condition="$(TestProject) == 'true'">$(TestPlatformRoot)scripts/stylecop.test.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

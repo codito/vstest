@@ -6,6 +6,8 @@ namespace Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.DataCollection
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.IO;
+    using System.Threading;
 
     using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
     using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection.Interfaces;
@@ -24,6 +26,8 @@ namespace Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.DataCollection
     internal class ProxyDataCollectionManager : IProxyDataCollectionManager
     {
         private const string PortOption = "--port";
+        private const string DiagOption = "--diag";
+        private const string ParentProcessIdOption = "--parentprocessid";
 
         private IDataCollectionRequestSender dataCollectionRequestSender;
         private IDataCollectionLauncher dataCollectionLauncher;
@@ -156,7 +160,6 @@ namespace Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.DataCollection
             var port = this.dataCollectionRequestSender.InitializeCommunication();
 
             // Warn the user that execution will wait for debugger attach.
-
             var processId = this.dataCollectionLauncher.LaunchDataCollector(null, this.GetCommandLineArguments(port));
 
             var dataCollectorDebugEnabled = Environment.GetEnvironmentVariable("VSTEST_DATACOLLECTOR_DEBUG");
@@ -171,7 +174,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.DataCollection
                 this.connectionTimeout = 5 * this.connectionTimeout;
             }
 
-            this.dataCollectionRequestSender.WaitForRequestHandlerConnection(connectionTimeout: 5000);
+            this.dataCollectionRequestSender.WaitForRequestHandlerConnection(this.connectionTimeout);
         }
 
         private void InvokeDataCollectionServiceAction(Action action, ITestMessageEventHandler runEventsHandler)
@@ -217,7 +220,23 @@ namespace Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.DataCollection
             commandlineArguments.Add(PortOption);
             commandlineArguments.Add(portNumber.ToString());
 
+            commandlineArguments.Add(ParentProcessIdOption);
+            commandlineArguments.Add(this.processHelper.GetCurrentProcessId().ToString());
+
+            if (!string.IsNullOrEmpty(EqtTrace.LogFile))
+            {
+                commandlineArguments.Add(DiagOption);
+                commandlineArguments.Add(this.GetTimestampedLogFile(EqtTrace.LogFile));
+            }
+
             return commandlineArguments;
+        }
+
+        private string GetTimestampedLogFile(string logFile)
+        {
+            return Path.ChangeExtension(logFile,
+                string.Format("datacollector.{0}_{1}{2}", DateTime.Now.ToString("yy-MM-dd_HH-mm-ss_fffff"),
+                    Thread.CurrentThread.ManagedThreadId, Path.GetExtension(logFile)));
         }
     }
 }

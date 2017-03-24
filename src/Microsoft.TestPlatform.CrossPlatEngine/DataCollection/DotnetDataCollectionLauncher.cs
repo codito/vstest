@@ -74,8 +74,6 @@ namespace Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.DataCollection
         {
             string dataCollectorFileName = null;
             var currentWorkingDirectory = Path.GetDirectoryName(typeof(DefaultDataCollectionLauncher).GetTypeInfo().Assembly.Location);
-            var currentProcessPath = this.processHelper.GetCurrentProcessFileName();
-
             var currentProcessFileName = this.processHelper.GetCurrentProcessFileName();
 
             if (EqtTrace.IsVerboseEnabled)
@@ -131,7 +129,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.DataCollection
             var cliArgs = string.Join(" ", commandLineArguments);
             var argumentsString = string.Format("{0} {1} {2} ", args, dataCollectorAssemblyPath, cliArgs);
 
-            this.DataCollectorProcess = this.processHelper.LaunchProcess(currentProcessFileName, argumentsString, currentWorkingDirectory, null);
+            this.DataCollectorProcess = this.processHelper.LaunchProcess(currentProcessFileName, argumentsString, currentWorkingDirectory, environmentVariables, null, null);
             return this.DataCollectorProcess.Id;
         }
     }

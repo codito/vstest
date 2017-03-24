@@ -6,11 +6,16 @@ namespace Microsoft.VisualStudio.TestPlatform.DataCollector
     using System;
     using System.Diagnostics;
     using System.Net.Sockets;
+    using System.Threading.Tasks;
 
-    using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
-    using Microsoft.VisualStudio.TestPlatform.ObjectModel;
     using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-    using Microsoft.VisualStudio.TestPlatform.Utilities;    
+    using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
+    using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection.Interfaces;
+    using Microsoft.VisualStudio.TestPlatform.CoreUtilities.Helpers;
+    using Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.Helpers;
+    using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+    using Microsoft.VisualStudio.TestPlatform.ObjectModel.Logging;
+    using Microsoft.VisualStudio.TestPlatform.Utilities;
 
     /// <summary>
     /// The program.
@@ -23,9 +28,19 @@ namespace Microsoft.VisualStudio.TestPlatform.DataCollector
         private const int ClientListenTimeOut = 5 * 1000;
 
         /// <summary>
-        /// Port where vstest.console is listening 
+        /// Port number used to communicate with test runner process.
         /// </summary>
-        private static int port;
+        private const string PortArgument = "--port";
+
+        /// <summary>
+        /// Parent process Id argument to monitor parent process.
+        /// </summary>
+        private const string ParentProcessArgument = "--parentprocessid";
+
+        /// <summary>
+        /// Log file for writing eqt trace logs.
+        /// </summary>
+        private const string LogFileArgument = "--diag";
 
         /// <summary>
         /// The main.
@@ -37,9 +52,8 @@ namespace Microsoft.VisualStudio.TestPlatform.DataCollector
         {
             try
             {
-                ParseArgs(args);
                 WaitForDebuggerIfEnabled();
-                Run();
+                Run(args);
             }
             catch (SocketException ex)
             {
@@ -51,51 +65,54 @@ namespace Microsoft.VisualStudio.TestPlatform.DataCollector
             }
         }
 
-        /// <summary>
-        /// Parse args.
-        /// </summary>
-        /// <param name="args">The args.</param>
-        private static void ParseArgs(string[] args)
+        private static void Run(string[] args)
         {
-            port = -1;
+            var argsDictionary = CommandLineArgumentsHelper.GetArgumentsDictionary(args);
+            var requestHandler = DataCollectionRequestHandler.Create(new SocketCommunicationManager(), new MessageSink());
 
-            for (var i = 0; i < args.Length; i++)
-            {
-                if (string.Equals("--port", args[i], StringComparison.OrdinalIgnoreCase) || string.Equals("-p", args[i], StringComparison.OrdinalIgnoreCase))
-                {
-                    if (i < args.Length - 1)
+            // Attach to exit of parent process
+            var parentProcessId = CommandLineArgumentsHelper.GetIntArgFromDict(argsDictionary, ParentProcessArgument);
+            EqtTrace.Info("DataCollector: Monitoring parent process with id: '{0}'", parentProcessId);
+
+            var processHelper = new ProcessHelper();
+            processHelper.SetExitCallback(parentProcessId,
+                () =>
                     {
-                        int.TryParse(args[i + 1], out port);
-                    }
+                        EqtTrace.Info("DataCollector: ParentProcess '{0}' Exited.", parentProcessId);
+                        Environment.Exit(1);
+                    });
 
-                    break;
-                }
+            // Setup logging if enabled
+            string logFile;
+            if (argsDictionary.TryGetValue(LogFileArgument, out logFile))
+            {
+                EqtTrace.InitializeVerboseTrace(logFile);
             }
 
-            if (port < 0)
+            // Get server port and initialize communication.
+            string portValue;
+            int port = argsDictionary.TryGetValue(PortArgument, out portValue) ? int.Parse(portValue) : 0;
+
+            if (port <= 0)
             {
                 throw new ArgumentException("Incorrect/No Port number");
             }
-        }
-
-        private static void Run()
-        {
-            var requestHandler = DataCollectionRequestHandler.Create(new SocketCommunicationManager(), new MessageSink());
 
             requestHandler.InitializeCommunication(port);
 
-            // Wait for the connection to the sender and start processing requests from sender
-            if (requestHandler.WaitForRequestSenderConnection(ClientListenTimeOut))
+            // Can only do this after InitializeCommunication because datacollector cannot "Send Log" unless communications are initialized
+            if (!string.IsNullOrEmpty(EqtTrace.LogFile))
             {
-                requestHandler.ProcessRequests();
+                requestHandler.SendDataCollectionMessage(new DataCollectionMessageEventArgs(TestMessageLevel.Informational, string.Format("Logging DataCollector Diagnostics in file: {0}", EqtTrace.LogFile)));
             }
-            else
-            {
-                EqtTrace.Info("DataCollector: RequestHandler timed out while connecting to the Sender.");
-                requestHandler.Close();
-                throw new TimeoutException();
-            }
-        }   
+
+            // Start processing async in a different task
+            EqtTrace.Info("DataCollector: Start Request Processing.");
+            var processingTask = StartProcessingAsync(requestHandler);
+
+            // Wait for processing to complete.
+            Task.WaitAny(processingTask);
+        }
 
         private static void WaitForDebuggerIfEnabled()
         {
@@ -116,6 +133,24 @@ namespace Microsoft.VisualStudio.TestPlatform.DataCollector
 
                 Debugger.Break();
             }
+        }
+
+        private static Task StartProcessingAsync(IDataCollectionRequestHandler requestHandler)
+        {
+            return Task.Run(() =>
+            {
+                // Wait for the connection to the sender and start processing requests from sender
+                if (requestHandler.WaitForRequestSenderConnection(ClientListenTimeOut))
+                {
+                    requestHandler.ProcessRequests();
+                }
+                else
+                {
+                    EqtTrace.Info("DataCollector: RequestHandler timed out while connecting to the Sender.");
+                    requestHandler.Close();
+                    throw new TimeoutException();
+                }
+            });
         }
     }
 }

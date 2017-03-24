@@ -18,6 +18,15 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
     [TestClass]
     public class SocketCommunicationManagerTests : IDisposable
     {
+<<<<<<< HEAD
+=======
+        private const string TestDiscoveryStartMessageWithNullPayload = "{\"MessageType\":\"TestDiscovery.Start\",\"Payload\":null}";
+
+        private const string TestDiscoveryStartMessageWithDummyPayload = "{\"MessageType\":\"TestDiscovery.Start\",\"Payload\":\"Dummy Payload\"}";
+
+        private const string DummyPayload = "Dummy Payload";
+
+>>>>>>> upstream/master
         private readonly SocketCommunicationManager communicationManager;
 
         private readonly TcpClient tcpClient;
@@ -102,7 +111,11 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
         {
             var port = this.communicationManager.HostServer();
             var acceptClientTask = this.communicationManager.AcceptClientAsync();
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> upstream/master
             this.communicationManager.StopServer();
 
             Assert.ThrowsException<AggregateException>(() => this.tcpClient.ConnectAsync(IPAddress.Loopback, port).Wait());
@@ -149,10 +162,14 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
         [TestMethod]
         public async Task StopClientShouldDisconnectClient()
         {
+<<<<<<< HEAD
             var port = this.StartServer();
             var setupClientTask = this.communicationManager.SetupClientAsync(port);
             var client = await this.tcpListener.AcceptTcpClientAsync();
             this.communicationManager.WaitForServerConnection(1000);
+=======
+            var client = await this.StartServerAndWaitForConnection();
+>>>>>>> upstream/master
 
             this.communicationManager.StopClient();
 
@@ -171,8 +188,12 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
 
             this.communicationManager.SendMessage(MessageType.StartDiscovery);
 
+<<<<<<< HEAD
             var message = "{\"MessageType\":\"TestDiscovery.Start\",\"Payload\":null}";
             Assert.AreEqual(message, this.ReadFromStream(client.GetStream()));
+=======
+            Assert.AreEqual(TestDiscoveryStartMessageWithNullPayload, this.ReadFromStream(client.GetStream()));
+>>>>>>> upstream/master
         }
 
         [TestMethod]
@@ -180,6 +201,7 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
         {
             var client = await this.StartServerAndWaitForConnection();
 
+<<<<<<< HEAD
             this.communicationManager.SendMessage(MessageType.StartDiscovery, "Dummy Payload");
 
             var message = "{\"MessageType\":\"TestDiscovery.Start\",\"Payload\":\"Dummy Payload\"}";
@@ -189,12 +211,76 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
         [TestMethod]
         public void SendMessageWithRawMessageShouldNotSerializeThePayload()
         {
+=======
+            this.communicationManager.SendMessage(MessageType.StartDiscovery, DummyPayload);
+
+            Assert.AreEqual(TestDiscoveryStartMessageWithDummyPayload, this.ReadFromStream(client.GetStream()));
+        }
+
+        [TestMethod]
+        public async Task SendMessageWithRawMessageShouldNotSerializeThePayload()
+        {
+            var client = await this.StartServerAndWaitForConnection();
+
+            this.communicationManager.SendRawMessage(DummyPayload);
+
+            Assert.AreEqual(DummyPayload, this.ReadFromStream(client.GetStream()));
+>>>>>>> upstream/master
         }
 
         #endregion
 
         #region Message receiver tests
 
+<<<<<<< HEAD
+=======
+        [TestMethod]
+        public async Task ReceiveMessageShouldReceiveDeserializedMessage()
+        {
+            var client = await this.StartServerAndWaitForConnection();
+            this.WriteToStream(client.GetStream(), TestDiscoveryStartMessageWithDummyPayload);
+
+            var message = this.communicationManager.ReceiveMessage();
+
+            Assert.AreEqual(MessageType.StartDiscovery, message.MessageType);
+            Assert.AreEqual(DummyPayload, message.Payload);
+        }
+
+        [TestMethod]
+        public async Task ReceiveMessageAsyncShouldReceiveDeserializedMessage()
+        {
+            var client = await this.StartServerAndWaitForConnection();
+            this.WriteToStream(client.GetStream(), TestDiscoveryStartMessageWithDummyPayload);
+
+            var message = await this.communicationManager.ReceiveMessageAsync(CancellationToken.None);
+
+            Assert.AreEqual(MessageType.StartDiscovery, message.MessageType);
+            Assert.AreEqual(DummyPayload, message.Payload);
+        }
+
+        [TestMethod]
+        public async Task ReceiveRawMessageShouldNotDeserializeThePayload()
+        {
+            var client = await this.StartServerAndWaitForConnection();
+            this.WriteToStream(client.GetStream(), DummyPayload);
+
+            var message = this.communicationManager.ReceiveRawMessage();
+
+            Assert.AreEqual(DummyPayload, message);
+        }
+
+        [TestMethod]
+        public async Task ReceiveRawMessageAsyncShouldNotDeserializeThePayload()
+        {
+            var client = await this.StartServerAndWaitForConnection();
+            this.WriteToStream(client.GetStream(), DummyPayload);
+
+            var message = await this.communicationManager.ReceiveRawMessageAsync(CancellationToken.None);
+
+            Assert.AreEqual(DummyPayload, message);
+        }
+
+>>>>>>> upstream/master
         #endregion
 
         private int StartServer()
@@ -229,5 +315,17 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.PlatformTests
                 return reader.ReadString();
             }
         }
+<<<<<<< HEAD
+=======
+
+        private void WriteToStream(Stream stream, string data)
+        {
+            using (var writer = new BinaryWriter(stream, Encoding.UTF8, true))
+            {
+                writer.Write(data);
+                writer.Flush();
+            }
+        }
+>>>>>>> upstream/master
     }
 }
