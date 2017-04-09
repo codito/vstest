@@ -24,7 +24,7 @@ CI_BUILD=false
 VERBOSE=false
 PROJECT_NAME_PATTERNS=
 
-while [ $# > 0 ]; do
+while [ $# -gt 0 ]; do
     lowerI="$(echo ${1:-} | awk '{print tolower($0)}')"
     case $lowerI in
         -h | --help)
@@ -87,7 +87,7 @@ export FrameworkPathOverride=/usr/lib/mono/4.5/
 # Build configuration
 #
 TPB_Solution="TestPlatform.sln"
-TPB_TargetFrameworkCore="netcoreapp1.0"
+TPB_TargetFrameworkCore="netcoreapp2.0"
 TPB_Configuration=$CONFIGURATION
 TPB_TargetRuntime=$TARGET_RUNTIME
 TPB_Version=$VERSION
