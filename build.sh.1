@@ -1,0 +1,244 @@
+#!/bin/bash
+# Copyright (c) Microsoft. All rights reserved.
+# Build script for Test Platform.
+
+set -o nounset  # Fail on uninitialized variables.
+set -e          # Fail on non-zero exit code.
+
+#
+# Logging routines
+#
+
+# ANSI color codes
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+NOCOLOR='\033[0m'
+
+#
+# Parse and override default configuration
+#
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        -c) TPB_Configuration="$2"; shift;;
+        -v) TPB_Verbose=true;;
+        *)  break;;
+    esac
+    shift
+done
+
+#
+# Logging
+#
+log()
+{
+    printf "${GREEN}... $@${NOCOLOR}\n"
+}
+
+verbose()
+{
+    if [ ${TPB_Verbose-false} ]
+    then
+        printf "${YELLOW}... $@${NOCOLOR}\n" >&2
+    fi
+}
+
+error()
+{
+    printf "${RED}... $@${NOCOLOR}\n" >&2
+}
+
+#
+# Variables
+#
+verbose "Setup environment variables."
+export TP_ROOT_DIR=$( cd "$(dirname "$0")" ; pwd -P )
+export TP_TOOLS_DIR="$TP_ROOT_DIR/tools"
+export TP_PACKAGES_DIR="$TP_ROOT_DIR/packages"
+export TP_OUT_DIR="$TP_ROOT_DIR/artifacts"
+export TP_PACKAGE_PROJ_DIR="$TP_ROOT_DIR/src/package"
+
+#
+# Dotnet configuration
+#
+# Disable first run since we want to control all package sources 
+verbose "Setup dotnet configuration."
+export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1 
+# Dotnet build doesn't support --packages yet. See https://github.com/dotnet/cli/issues/2712
+export NUGET_PACKAGES=$TP_PACKAGES_DIR
+export NUGET_EXE_Version="3.4.3"
+export DOTNET_CLI_VERSION="latest"
+
+#
+# Build configuration
+#
+verbose "Setup build configuration."
+TPB_Solution="TestPlatform.sln"
+TPB_TargetFramework="net46"
+TPB_TargetFrameworkCore="netcoreapp1.0"
+TPB_Configuration=${TPB_Configuration:-"Debug"}
+#TPB_TargetRuntime=$TargetRuntime
+#TPB_Version=$Version
+#TPB_VersionSuffix=$VersionSuffix
+#TPB_CIBuild=$CIBuild
+TPB_Verbose=${TPB_Verbose:-false}
+
+#
+# Build steps
+#
+install_cli()
+{
+    local failed=false
+    local install_script="$TP_TOOLS_DIR/dotnet-install.sh"
+    local remote_path="https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/dotnet-install.sh"
+
+    log "install_cli: Get dotnet-install.sh script..."
+    $(_execute \
+        "curl --retry 10 -sSL --create-dirs -o $install_script $remote_path" \
+        "Failed to download dotnet-install.sh script.")
+    chmod u+x $install_script
+
+    log "install_cli: Get the latest dotnet cli toolset..."
+    $install_script --install-dir "$TP_TOOLS_DIR/dotnet" --no-path --version $DOTNET_CLI_VERSION
+
+    log "install_cli: Complete."
+    return 0
+}
+
+restore_package()
+{
+    local failed=false
+    local dotnet=$(_get_dotnet_path)
+
+    log "restore_package: Restore packages for $TPB_Solution..."
+
+    verbose "$dotnet restore $TPB_Solution -warnaserror"
+    $dotnet restore $TPB_Solution -warnaserror || failed=true
+    if [ "$failed" = true ]; then
+        error "Failed to restore packages."
+        return 1
+    fi
+
+    log "restore_package: Complete."
+    return 0
+}
+
+update_resources()
+{
+    # Blocked on port of xlftool to netcore
+    #local failed=false
+    #local dotnet=$(_get_dotnet_path)
+    local loc_project=src/package/localize/localize.proj
+
+    log "update_resources: Building $loc_project..."
+    #verbose "$dotnet msbuild $loc_project -m -nologo -t:Localize || failed=true"
+    #$dotnet msbuild $loc_project -m -nologo -t:Localize || failed=true
+    #if [ "$failed" = true ]; then
+        #error "Failed to update localized resources."
+        #return 1
+    #fi
+
+    log "update_resources: Complete."
+}
+
+build_source()
+{
+    local failed=false
+    local dotnet=$(_get_dotnet_path)
+
+    log "build_source: Building $TPB_Solution..."
+    verbose "$dotnet build $TPB_Solution || failed=true"
+    $dotnet build $TPB_Solution || failed=true
+    if [ "$failed" = true ]; then
+        error "Failed to build source."
+        return 1
+    fi
+
+    log "build_source: Complete."
+}
+
+publish_package()
+{
+    local failed=false
+    local dotnet=$(_get_dotnet_path)
+    local pkg_dir=$TP_OUT_DIR/$TPB_Configuration
+
+    log "publish_package: Publishing packages..."
+
+    local vstestconsole=src/vstest.console/vstest.console.csproj
+    local testhost=src/testhost/testhost.csproj
+    local datacollector=src/datacollector/datacollector.csproj
+
+    (_publish_internal $vstestconsole &&\
+        _publish_internal $testhost &&\
+        _publish_internal $datacollector) || failed=true
+    if [ "$failed" = true ]; then
+        error "Failed to publish package."
+        return 1
+    fi
+
+    log "publish_package: Complete."
+    return 0
+}
+
+create_nuget_package()
+{
+    local failed=false
+    local dotnet=$(_get_dotnet_path)
+    local pkg_dir=$TP_OUT_DIR/$TPB_Configuration
+
+    log "create_nuget_package: Creating nuget packages..."
+
+    log "create_nuget_package: Complete."
+    return 0
+}
+
+#
+# Privates
+#
+_get_dotnet_path()
+{
+    echo "$TP_TOOLS_DIR/dotnet/dotnet"
+}
+
+_execute()
+{
+    local failed=false
+
+    verbose "Executing '$1'"
+    $1 || failed=true
+    if [ "$failed" = true ]; then
+        error "$2"
+        return 1
+    fi
+
+    return 0
+}
+
+_publish_internal()
+{
+    local dotnet=$(_get_dotnet_path)
+    local failed=false
+    log "Package: Publish $1"
+
+    verbose ".. Executing $dotnet publish $1 -o $pkg_dir/netcoreapp1.0 -f netcoreapp1.0"
+    $dotnet publish $1 -o $pkg_dir/netcoreapp1.0 -f netcoreapp1.0 || failed=true
+    if [ "$failed" = true ]; then
+        error ".. .. Failed to publish $1"
+        return 1
+    fi
+
+    return 0
+}
+
+log "Build started: args = '$@'"
+log "Test platform environment variables: "
+(set | grep ^TP_)
+
+log "Test platform build variables: "
+(set | grep ^TPB_)
+
+install_cli && restore_package && update_resources && build_source && publish_package && create_nuget_package
+
+log "Build complete."
