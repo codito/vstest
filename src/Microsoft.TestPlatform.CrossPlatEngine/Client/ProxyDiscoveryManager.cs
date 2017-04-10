@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.Client
         /// </summary>
         /// <param name="testHostManager">Test host manager instance.</param>
         public ProxyDiscoveryManager(ITestRuntimeProvider testHostManager)
-            : this(new TestRequestSender(), testHostManager, CrossPlatEngine.Constants.ClientConnectionTimeout)
+            : this(new TestRequestSender2(), testHostManager, CrossPlatEngine.Constants.ClientConnectionTimeout)
         {
             this.testHostManager = testHostManager;
         }

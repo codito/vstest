@@ -27,4 +27,13 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             return "(" + this.MessageType + ") -> " + (this.Payload == null ? "null" : this.Payload.ToString(Formatting.Indented));
         }
     }
+
+#pragma warning disable SA1402 // File may only contain a single type
+    public class Message2
+#pragma warning restore SA1402 // File may only contain a single type
+    {
+        public string MessageType { get; set; }
+
+        public object Payload { get; set; }
+    }
 }
