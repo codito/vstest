@@ -103,130 +103,77 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
         [TestMethod]
         public void DiscoverTestsShouldCallHandleDiscoveredTestsOnTestCaseEvent()
         {
-            this.SetupDeserializeMessage(MessageType.TestCasesFound, new TestCase[2]);
+            this.SetupDeserializeMessage<IEnumerable<TestCase>>(MessageType.TestCasesFound, new TestCase[2]);
             this.SetupFakeCommunicationChannel();
 
             this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
 
             this.RaiseMessageReceivedEvent();
             this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleDiscoveredTests(It.Is<IEnumerable<TestCase>>(t => t.Count() == 2)));
-
-            ////var sources = new List<string> { "Hello", "World" };
-            ////string settingsXml = "SettingsXml";
-            ////var mockHandler = new Mock<ITestDiscoveryEventsHandler>();
-            ////var discoveryCriteria = new DiscoveryCriteria(sources, 100, settingsXml);
-
-            ////var testCases = new List<TestCase> { new TestCase("x.y.z", new Uri("x://y"), "x.dll") };
-            ////var rawMessage = "OnDiscoveredTests";
-            ////var message = new Message { MessageType = MessageType.TestCasesFound, Payload = null };
-
-            ////this.SetupReceiveRawMessageAsyncAndDeserializeMessageAndInitialize(rawMessage, message);
-            ////this.mockDataSerializer.Setup(ds => ds.DeserializePayload<IEnumerable<TestCase>>(message)).Returns(testCases);
-
-            ////var completePayload = new DiscoveryCompletePayload
-            ////{
-            ////    IsAborted = false,
-            ////    LastDiscoveredTests = null,
-            ////    TotalTests = 1
-            ////};
-            ////var completeMessage = new Message { MessageType = MessageType.DiscoveryComplete, Payload = null };
-            ////mockHandler.Setup(mh => mh.HandleDiscoveredTests(testCases)).Callback(
-            ////    () =>
-            ////    {
-            ////        this.mockDataSerializer.Setup(ds => ds.DeserializeMessage(It.IsAny<string>())).Returns(completeMessage);
-            ////        this.mockDataSerializer.Setup(ds => ds.DeserializePayload<DiscoveryCompletePayload>(completeMessage)).Returns(completePayload);
-            ////    });
-
-            ////this.testRequestSender.DiscoverTests(discoveryCriteria, mockHandler.Object);
-
-            ////this.mockServer.Verify(mc => mc.SendMessage(MessageType.StartDiscovery, discoveryCriteria), Times.Once);
-            ////this.mockDataSerializer.Verify(ds => ds.DeserializeMessage(rawMessage), Times.Exactly(2));
-            ////mockHandler.Verify(mh => mh.HandleDiscoveredTests(testCases), Times.Once);
-            ////mockHandler.Verify(mh => mh.HandleRawMessage(rawMessage), Times.Exactly(2));
         }
 
-        ////[TestMethod]
-        ////public void DiscoverTestsShouldCallHandleLogMessageOnTestMessage()
-        ////{
-        ////    var sources = new List<string>() { "Hello", "World" };
-        ////    string settingsXml = "SettingsXml";
-        ////    var mockHandler = new Mock<ITestDiscoveryEventsHandler>();
-        ////    var discoveryCriteria = new DiscoveryCriteria(sources, 100, settingsXml);
+        [TestMethod]
+        public void DiscoverTestsShouldCallHandleDiscoveryCompleteOnDiscoveryCompletion()
+        {
+            var completePayload = new DiscoveryCompletePayload { TotalTests = 10, IsAborted = true };
+            this.SetupDeserializeMessage<DiscoveryCompletePayload>(MessageType.DiscoveryComplete, completePayload);
+            this.SetupFakeCommunicationChannel();
 
-        ////    var rawMessage = "TestMessage";
-        ////    var messagePayload = new TestMessagePayload() { MessageLevel = TestMessageLevel.Error, Message = rawMessage };
-        ////    var message = new Message() { MessageType = MessageType.TestMessage, Payload = null };
+            this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
 
-        ////    this.SetupReceiveRawMessageAsyncAndDeserializeMessageAndInitialize(rawMessage, message);
-        ////    this.mockDataSerializer.Setup(ds => ds.DeserializePayload<TestMessagePayload>(message)).Returns(messagePayload);
+            this.RaiseMessageReceivedEvent();
+            this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleDiscoveryComplete(10, null, true));
+        }
 
-        ////    var completePayload = new DiscoveryCompletePayload()
-        ////    {
-        ////        IsAborted = false,
-        ////        LastDiscoveredTests = null,
-        ////        TotalTests = 1
-        ////    };
-        ////    var completeMessage = new Message() { MessageType = MessageType.DiscoveryComplete, Payload = null };
-        ////    mockHandler.Setup(mh => mh.HandleLogMessage(TestMessageLevel.Error, rawMessage)).Callback(
-        ////        () =>
-        ////        {
-        ////            this.mockDataSerializer.Setup(ds => ds.DeserializeMessage(It.IsAny<string>())).Returns(completeMessage);
-        ////            this.mockDataSerializer.Setup(ds => ds.DeserializePayload<DiscoveryCompletePayload>(completeMessage)).Returns(completePayload);
-        ////        });
+        [TestMethod]
+        public void DiscoverTestShouldCallHandleLogMessageOnTestMessage()
+        {
+            var message = new TestMessagePayload { MessageLevel = TestMessageLevel.Error, Message = "Message1" };
+            this.SetupDeserializeMessage<TestMessagePayload>(MessageType.TestMessage, message);
+            this.SetupFakeCommunicationChannel();
 
-        ////    this.testRequestSender.DiscoverTests(discoveryCriteria, mockHandler.Object);
+            this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
 
-        ////    this.mockServer.Verify(mc => mc.SendMessage(MessageType.StartDiscovery, discoveryCriteria), Times.Once);
-        ////    this.mockDataSerializer.Verify(ds => ds.DeserializeMessage(rawMessage), Times.Exactly(2));
-        ////    mockHandler.Verify(mh => mh.HandleLogMessage(TestMessageLevel.Error, rawMessage), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleRawMessage(rawMessage), Times.Exactly(2));
-        ////}
+            this.RaiseMessageReceivedEvent();
+            this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleLogMessage(TestMessageLevel.Error, "Message1"));
+        }
 
-        ////[TestMethod]
-        ////public void DiscoverTestsShouldCallHandleDiscoveryCompleteOnDiscoveryCompletion()
-        ////{
-        ////    var sources = new List<string>() { "Hello", "World" };
-        ////    string settingsXml = "SettingsXml";
-        ////    var mockHandler = new Mock<ITestDiscoveryEventsHandler>();
-        ////    var discoveryCriteria = new DiscoveryCriteria(sources, 100, settingsXml);
+        [TestMethod]
+        public void DiscoverTestShouldAbortDiscoveryIfExceptionThrownOnMessageReceived()
+        {
+            this.mockDataSerializer.Setup(ds => ds.DeserializeMessage(It.IsAny<string>())).Callback(() => throw new Exception("Dummy Message"));
+            this.SetupFakeCommunicationChannel();
 
-        ////    var rawMessage = "RunComplete";
-        ////    var completePayload = new DiscoveryCompletePayload()
-        ////    {
-        ////        IsAborted = false,
-        ////        LastDiscoveredTests = null,
-        ////        TotalTests = 1
-        ////    };
-        ////    var message = new Message() { MessageType = MessageType.DiscoveryComplete, Payload = null };
+            this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
 
-        ////    this.SetupReceiveRawMessageAsyncAndDeserializeMessageAndInitialize(rawMessage, message);
-        ////    this.mockDataSerializer.Setup(ds => ds.DeserializePayload<DiscoveryCompletePayload>(message)).Returns(completePayload);
+            this.RaiseMessageReceivedEvent();
+            this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleLogMessage(TestMessageLevel.Error, It.Is<string>(s => s.Contains("Dummy Message"))));
+        }
 
-        ////    this.testRequestSender.DiscoverTests(discoveryCriteria, mockHandler.Object);
+        [TestMethod]
+        public void DiscoverTestShouldNotifyRawMessageIfExceptionThrownOnMessageReceived()
+        {
+            this.mockDataSerializer.Setup(ds => ds.DeserializeMessage(It.IsAny<string>())).Callback(() => throw new Exception("Dummy Message"));
+            this.SetupFakeCommunicationChannel();
 
-        ////    this.mockServer.Verify(mc => mc.SendMessage(MessageType.StartDiscovery, discoveryCriteria), Times.Once);
-        ////    this.mockDataSerializer.Verify(ds => ds.DeserializeMessage(rawMessage), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleDiscoveryComplete(1, null, false), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleRawMessage(rawMessage), Times.Once);
-        ////}
+            this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
 
-        ////[TestMethod]
-        ////public void DiscoverTestsShouldHandleExceptionOnSendMessage()
-        ////{
-        ////    var sources = new List<string>() { "Hello", "World" };
-        ////    string settingsXml = "SettingsXml";
-        ////    var mockHandler = new Mock<ITestDiscoveryEventsHandler>();
-        ////    var discoveryCriteria = new DiscoveryCriteria(sources, 100, settingsXml);
-        ////    var exception = new Exception();
-        ////    this.mockServer.Setup(cm => cm.SendMessage(MessageType.StartDiscovery, discoveryCriteria))
-        ////        .Throws(exception);
+            this.RaiseMessageReceivedEvent();
+            this.mockDataSerializer.Verify(ds => ds.SerializePayload(MessageType.TestMessage, It.IsAny<TestMessagePayload>()), Times.Once);
+            this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleRawMessage(It.IsAny<string>()));
+        }
 
-        ////    this.testRequestSender.DiscoverTests(discoveryCriteria, mockHandler.Object);
+        [TestMethod]
+        public void DiscoverTestShouldNotifyHandleDiscoveryCompleteIfExceptionThrownOnMessageReceived()
+        {
+            this.mockDataSerializer.Setup(ds => ds.DeserializeMessage(It.IsAny<string>())).Callback(() => throw new Exception("Dummy Message"));
+            this.SetupFakeCommunicationChannel();
 
-        ////    mockHandler.Verify(mh => mh.HandleDiscoveryComplete(-1, null, true), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleLogMessage(TestMessageLevel.Error, It.IsAny<string>()), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleRawMessage(It.IsAny<string>()), Times.Exactly(2));
-        ////}
+            this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
+
+            this.RaiseMessageReceivedEvent();
+            this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleDiscoveryComplete(-1, null, true));
+        }
 
         ////[TestMethod]
         ////public void DiscoverTestsShouldHandleDiscoveryCompleteOnCommunicationFailure()

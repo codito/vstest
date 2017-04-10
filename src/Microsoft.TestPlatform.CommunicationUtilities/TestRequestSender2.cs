@@ -315,7 +315,6 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 
         private void CleanupCommunicationIfProcessExit()
         {
-            throw new NotImplementedException();
         }
     }
 }
