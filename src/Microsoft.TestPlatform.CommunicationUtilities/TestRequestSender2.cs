@@ -16,6 +16,9 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 
     using CommonResources = Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources.Resources;
 
+    /// <summary>
+    /// Test request sender implementation.
+    /// </summary>
     public class TestRequestSender2 : ITestRequestSender
     {
         private ICommunicationServer communicationServer;
@@ -36,6 +39,11 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestRequestSender2"/> class.
+        /// </summary>
+        /// <param name="server">Communication server implementation.</param>
+        /// <param name="serializer">Serializer implementation.</param>
         protected TestRequestSender2(ICommunicationServer server, IDataSerializer serializer)
         {
             this.communicationServer = server;

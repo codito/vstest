@@ -29,6 +29,8 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
         private readonly ConnectedEventArgs connectedEventArgs;
         private readonly List<string> pathToAdditionalExtensions = new List<string> { "Hello", "World" };
         private readonly Mock<ITestDiscoveryEventsHandler> mockDiscoveryEventsHandler;
+        private readonly Mock<ITestRunEventsHandler> mockExecutionEventsHandler;
+        private readonly TestRunCriteriaWithSources testRunCriteriaWithSources;
 
         public TestRequestSenderTests2()
         {
@@ -39,6 +41,8 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
 
             this.connectedEventArgs = new ConnectedEventArgs(this.mockChannel.Object);
             this.mockDiscoveryEventsHandler = new Mock<ITestDiscoveryEventsHandler>();
+            this.mockExecutionEventsHandler = new Mock<ITestRunEventsHandler>();
+            this.testRunCriteriaWithSources = new TestRunCriteriaWithSources(new Dictionary<string, IEnumerable<string>>(), "runsettings", null);
         }
 
         [TestMethod]
@@ -85,6 +89,19 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
             this.testRequestSender.InitializeDiscovery(this.pathToAdditionalExtensions, false);
 
             this.mockDataSerializer.Verify(d => d.SerializePayload(MessageType.DiscoveryInitialize, this.pathToAdditionalExtensions), Times.Once);
+            this.mockChannel.Verify(mc => mc.Send(It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void DiscoverTestsShouldSendStartDiscoveryMessageOnChannel()
+        {
+            this.SetupFakeCommunicationChannel();
+
+            this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
+
+            this.mockDataSerializer.Verify(
+                s => s.SerializePayload(MessageType.StartDiscovery, It.IsAny<DiscoveryCriteria>()),
+                Times.Once);
             this.mockChannel.Verify(mc => mc.Send(It.IsAny<string>()), Times.Once);
         }
 
@@ -175,35 +192,9 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
             this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleDiscoveryComplete(-1, null, true));
         }
 
-        ////[TestMethod]
-        ////public void DiscoverTestsShouldHandleDiscoveryCompleteOnCommunicationFailure()
-        ////{
-        ////    this.DiscoverTestsErrorScenarioTestTemplates(CommunicationUtilitiesResources.UnableToCommunicateToTestHost, (s) => { });
-        ////}
-
-        ////[TestMethod]
-        ////public void DiscoverTestsShouldHandleDiscoveryCompleteOnProcessExit()
-        ////{
-        ////    this.DiscoverTestsErrorScenarioTestTemplates("Error Message", (s) => this.testRequestSender.OnClientProcessExit(s));
-        ////}
-
-        ////public void DiscoverTestsErrorScenarioTestTemplates(string errorMessage, Action<string> exitCallback)
-        ////{
-        ////    var sources = new List<string>() { "Hello", "World" };
-        ////    string settingsXml = "SettingsXml";
-        ////    var mockHandler = new Mock<ITestDiscoveryEventsHandler>();
-        ////    var discoveryCriteria = new DiscoveryCriteria(sources, 100, settingsXml);
-        ////    this.mockServer.Setup(cm => cm.ReceiveRawMessageAsync(It.IsAny<CancellationToken>())).
-        ////        Returns(Task.FromResult((string)null)).Callback(() => exitCallback(errorMessage));
-
-        ////    this.testRequestSender.InitializeCommunication();
-        ////    this.testRequestSender.DiscoverTests(discoveryCriteria, mockHandler.Object);
-
-        ////    mockHandler.Verify(mh => mh.HandleDiscoveryComplete(-1, null, true), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleLogMessage(TestMessageLevel.Error, string.Format(CommunicationUtilitiesResources.AbortedTestDiscovery, errorMessage)), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleRawMessage(It.IsAny<string>()), Times.Exactly(2));
-        ////}
         #endregion
+
+        #region Execution Protocol Tests
 
         [TestMethod]
         public void InitializeExecutionShouldSendCommunicationMessageWithCorrectParameters()
@@ -216,203 +207,172 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
             this.mockChannel.Verify(mc => mc.Send(It.IsAny<string>()), Times.Once);
         }
 
-        ////[TestMethod]
-        ////public void StartTestRunWithSourcesShouldCallHandleTestRunStatsChange()
-        ////{
-        ////    var mockHandler = new Mock<ITestRunEventsHandler>();
-        ////    var runCriteria = new TestRunCriteriaWithSources(null, null, null);
+        [TestMethod]
+        public void StartTestRunShouldSendStartTestExecutionWithSourcesOnChannel()
+        {
+            this.SetupFakeCommunicationChannel();
 
-        ////    var testRunChangedArgs = new TestRunChangedEventArgs(null, null, null);
-        ////    var rawMessage = "OnTestRunStatsChange";
-        ////    var message = new Message() { MessageType = MessageType.TestRunStatsChange, Payload = null };
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
 
-        ////    this.SetupReceiveRawMessageAsyncAndDeserializeMessageAndInitialize(rawMessage, message);
-        ////    this.mockDataSerializer.Setup(ds => ds.DeserializePayload<TestRunChangedEventArgs>(message)).Returns(testRunChangedArgs);
+            this.mockDataSerializer.Verify(d => d.SerializePayload(MessageType.StartTestExecutionWithSources, this.testRunCriteriaWithSources), Times.Once);
+            this.mockChannel.Verify(mc => mc.Send(It.IsAny<string>()), Times.Once);
+        }
 
-        ////    var completePayload = new TestRunCompletePayload()
-        ////    {
-        ////        ExecutorUris = null,
-        ////        LastRunTests = null,
-        ////        RunAttachments = null,
-        ////        TestRunCompleteArgs = null
-        ////    };
-        ////    var completeMessage = new Message() { MessageType = MessageType.ExecutionComplete, Payload = null };
-        ////    mockHandler.Setup(mh => mh.HandleTestRunStatsChange(testRunChangedArgs)).Callback(
-        ////        () =>
-        ////        {
-        ////            this.mockDataSerializer.Setup(ds => ds.DeserializeMessage(It.IsAny<string>())).Returns(completeMessage);
-        ////            this.mockDataSerializer.Setup(ds => ds.DeserializePayload<TestRunCompletePayload>(completeMessage)).Returns(completePayload);
-        ////        });
+        [TestMethod]
+        public void StartTestRunWithTestsShouldSendStartTestExecutionWithTestsOnChannel()
+        {
+            var runCriteria = new TestRunCriteriaWithTests(new TestCase[2], "runsettings", null);
+            this.SetupFakeCommunicationChannel();
 
-        ////    var waitHandle = new AutoResetEvent(false);
-        ////    mockHandler.Setup(mh => mh.HandleTestRunComplete(
-        ////        It.IsAny<TestRunCompleteEventArgs>(),
-        ////        It.IsAny<TestRunChangedEventArgs>(),
-        ////        It.IsAny<ICollection<AttachmentSet>>(),
-        ////        It.IsAny<ICollection<string>>())).Callback(() => waitHandle.Set());
+            this.testRequestSender.StartTestRun(runCriteria, this.mockExecutionEventsHandler.Object);
 
-        ////    this.testRequestSender.StartTestRun(runCriteria, mockHandler.Object);
+            this.mockDataSerializer.Verify(d => d.SerializePayload(MessageType.StartTestExecutionWithTests, runCriteria), Times.Once);
+            this.mockChannel.Verify(mc => mc.Send(It.IsAny<string>()), Times.Once);
+        }
 
-        ////    waitHandle.WaitOne();
+        [TestMethod]
+        public void StartTestRunShouldNotifyRawMessageOnMessageReceived()
+        {
+            this.SetupFakeCommunicationChannel();
 
-        ////    this.mockServer.Verify(mc => mc.SendMessage(MessageType.StartTestExecutionWithSources, runCriteria), Times.Once);
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
 
-        ////    // One for run stats and another for runcomplete
-        ////    this.mockDataSerializer.Verify(ds => ds.DeserializeMessage(rawMessage), Times.Exactly(2));
-        ////    mockHandler.Verify(mh => mh.HandleTestRunStatsChange(testRunChangedArgs), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleRawMessage(rawMessage), Times.Exactly(2));
-        ////}
+            this.mockDataSerializer.Verify(d => d.SerializePayload(MessageType.StartTestExecutionWithSources, this.testRunCriteriaWithSources), Times.Once);
+            this.mockChannel.Verify(mc => mc.Send(It.IsAny<string>()), Times.Once);
+        }
 
-        ////[TestMethod]
-        ////public void StartTestRunWithTestsShouldCallHandleTestRunStatsChange()
-        ////{
-        ////    var mockHandler = new Mock<ITestRunEventsHandler>();
-        ////    var runCriteria = new TestRunCriteriaWithTests(null, null, null);
+        [TestMethod]
+        public void StartTestRunShouldNotifyTestRunStatsOnMessageReceived()
+        {
+            var testRunChangedArgs = new TestRunChangedEventArgs(
+                null,
+                new Microsoft.VisualStudio.TestPlatform.ObjectModel.TestResult[2],
+                new TestCase[2]);
+            this.SetupDeserializeMessage(MessageType.TestRunStatsChange, testRunChangedArgs);
+            this.SetupFakeCommunicationChannel();
 
-        ////    var testRunChangedArgs = new TestRunChangedEventArgs(null, null, null);
-        ////    var rawMessage = "OnTestRunStatsChange";
-        ////    var message = new Message() { MessageType = MessageType.TestRunStatsChange, Payload = null };
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
 
-        ////    this.SetupReceiveRawMessageAsyncAndDeserializeMessageAndInitialize(rawMessage, message);
-        ////    this.mockDataSerializer.Setup(ds => ds.DeserializePayload<TestRunChangedEventArgs>(message)).Returns(testRunChangedArgs);
+            this.RaiseMessageReceivedEvent();
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleTestRunStatsChange(testRunChangedArgs), Times.Once);
+        }
 
-        ////    var completePayload = new TestRunCompletePayload()
-        ////    {
-        ////        ExecutorUris = null,
-        ////        LastRunTests = null,
-        ////        RunAttachments = null,
-        ////        TestRunCompleteArgs = null
-        ////    };
-        ////    var completeMessage = new Message() { MessageType = MessageType.ExecutionComplete, Payload = null };
-        ////    var waitHandle = new AutoResetEvent(false);
-        ////    mockHandler.Setup(mh => mh.HandleTestRunStatsChange(testRunChangedArgs)).Callback(
-        ////        () =>
-        ////        {
-        ////            this.mockDataSerializer.Setup(ds => ds.DeserializeMessage(It.IsAny<string>())).Returns(completeMessage);
-        ////            this.mockDataSerializer.Setup(ds => ds.DeserializePayload<TestRunCompletePayload>(completeMessage)).Returns(completePayload);
-        ////            waitHandle.Set();
-        ////        });
+        [TestMethod]
+        public void StartTestRunShouldNotifyExecutionCompleteOnMessageReceived()
+        {
+            var testRunCompletePayload = new TestRunCompletePayload
+            {
+                TestRunCompleteArgs = new TestRunCompleteEventArgs(null, false, false, null, null, TimeSpan.MaxValue),
+                LastRunTests = new TestRunChangedEventArgs(null, null, null),
+                RunAttachments = new List<AttachmentSet>()
+            };
+            this.SetupDeserializeMessage(MessageType.ExecutionComplete, testRunCompletePayload);
+            this.SetupFakeCommunicationChannel();
 
-        ////    this.testRequestSender.StartTestRun(runCriteria, mockHandler.Object);
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
 
-        ////    waitHandle.WaitOne();
-        ////    this.mockServer.Verify(mc => mc.SendMessage(MessageType.StartTestExecutionWithTests, runCriteria), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleTestRunStatsChange(testRunChangedArgs), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleRawMessage(rawMessage), Times.AtLeastOnce);
-        ////}
+            this.RaiseMessageReceivedEvent();
+            this.mockExecutionEventsHandler.Verify(
+                eh => eh.HandleTestRunComplete(
+                    testRunCompletePayload.TestRunCompleteArgs,
+                    testRunCompletePayload.LastRunTests,
+                    testRunCompletePayload.RunAttachments,
+                    It.IsAny<ICollection<string>>()),
+                Times.Once);
+        }
 
-        ////[TestMethod]
-        ////public void StartTestRunShouldCallHandleLogMessageOnTestMessage()
-        ////{
-        ////    var mockHandler = new Mock<ITestRunEventsHandler>();
-        ////    var runCriteria = new TestRunCriteriaWithSources(null, null, null);
+        [TestMethod]
+        public void StartTestRunShouldNotifyTestMessageOnMessageReceived()
+        {
+            var testMessagePayload = new TestMessagePayload { MessageLevel = TestMessageLevel.Error, Message = "Dummy" };
+            this.SetupDeserializeMessage(MessageType.TestMessage, testMessagePayload);
+            this.SetupFakeCommunicationChannel();
 
-        ////    var rawMessage = "OnLogMessage";
-        ////    var message = new Message() { MessageType = MessageType.TestMessage, Payload = null };
-        ////    var payload = new TestMessagePayload() { MessageLevel = TestMessageLevel.Error, Message = rawMessage };
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
 
-        ////    this.SetupReceiveRawMessageAsyncAndDeserializeMessageAndInitialize(rawMessage, message);
-        ////    this.mockDataSerializer.Setup(ds => ds.DeserializePayload<TestMessagePayload>(message)).Returns(payload);
+            this.RaiseMessageReceivedEvent();
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleLogMessage(TestMessageLevel.Error, "Dummy"), Times.Once);
+        }
 
-        ////    var completePayload = new TestRunCompletePayload()
-        ////    {
-        ////        ExecutorUris = null, LastRunTests = null, RunAttachments = null, TestRunCompleteArgs = null
-        ////    };
-        ////    var completeMessage = new Message() { MessageType = MessageType.ExecutionComplete, Payload = null };
-        ////    var waitHandle = new AutoResetEvent(false);
-        ////    mockHandler.Setup(mh => mh.HandleLogMessage(TestMessageLevel.Error, rawMessage)).Callback(
-        ////        () =>
-        ////        {
-        ////            this.mockDataSerializer.Setup(ds => ds.DeserializeMessage(It.IsAny<string>())).Returns(completeMessage);
-        ////            this.mockDataSerializer.Setup(ds => ds.DeserializePayload<TestRunCompletePayload>(completeMessage)).Returns(completePayload);
-        ////            waitHandle.Set();
-        ////        });
+        [TestMethod]
+        public void StartTestRunShouldNotifyLaunchWithDebuggerOnMessageReceived()
+        {
+            var launchMessagePayload = new TestProcessStartInfo();
+            this.SetupDeserializeMessage(MessageType.LaunchAdapterProcessWithDebuggerAttached, launchMessagePayload);
+            this.SetupFakeCommunicationChannel();
 
-        ////    this.testRequestSender.StartTestRun(runCriteria, mockHandler.Object);
-        ////    waitHandle.WaitOne();
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
 
-        ////    this.mockServer.Verify(mc => mc.SendMessage(MessageType.StartTestExecutionWithSources, runCriteria), Times.Once);
-        ////    this.mockDataSerializer.Verify(ds => ds.DeserializeMessage(It.IsAny<string>()), Times.Exactly(2));
-        ////    mockHandler.Verify(mh => mh.HandleLogMessage(payload.MessageLevel, payload.Message), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleRawMessage(rawMessage), Times.AtLeastOnce);
-        ////}
+            this.RaiseMessageReceivedEvent();
+            this.mockExecutionEventsHandler.Verify(eh => eh.LaunchProcessWithDebuggerAttached(launchMessagePayload), Times.Once);
+        }
 
-        ////[TestMethod]
-        ////public void StartTestRunShouldCallLaunchProcessWithDebuggerAndWaitForCallback()
-        ////{
-        ////    var mockHandler = new Mock<ITestRunEventsHandler>();
-        ////    var runCriteria = new TestRunCriteriaWithSources(null, null, null);
+        [TestMethod]
+        public void StartTestRunShouldSendLaunchDebuggerAttachedCallbackOnMessageReceived()
+        {
+            var launchMessagePayload = new TestProcessStartInfo();
+            this.SetupDeserializeMessage(MessageType.LaunchAdapterProcessWithDebuggerAttached, launchMessagePayload);
+            this.SetupFakeCommunicationChannel();
 
-        ////    var rawMessage = "LaunchProcessWithDebugger";
-        ////    var message = new Message() { MessageType = MessageType.LaunchAdapterProcessWithDebuggerAttached, Payload = null };
-        ////    var payload = new TestProcessStartInfo();
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
 
-        ////    this.SetupReceiveRawMessageAsyncAndDeserializeMessageAndInitialize(rawMessage, message);
-        ////    this.mockDataSerializer.Setup(ds => ds.DeserializePayload<TestProcessStartInfo>(message)).Returns(payload);
+            this.RaiseMessageReceivedEvent();
+            this.mockDataSerializer.Verify(ds => ds.SerializePayload(MessageType.LaunchAdapterProcessWithDebuggerAttachedCallback, It.IsAny<int>()), Times.Once);
+            this.mockChannel.Verify(c => c.Send(It.IsAny<string>()), Times.AtLeastOnce);
+        }
 
-        ////    var completePayload = new TestRunCompletePayload()
-        ////    {
-        ////        ExecutorUris = null,
-        ////        LastRunTests = null,
-        ////        RunAttachments = null,
-        ////        TestRunCompleteArgs = null
-        ////    };
-        ////    var completeMessage = new Message() { MessageType = MessageType.ExecutionComplete, Payload = null };
-        ////    mockHandler.Setup(mh => mh.LaunchProcessWithDebuggerAttached(payload)).Callback(
-        ////        () =>
-        ////        {
-        ////            this.mockDataSerializer.Setup(ds => ds.DeserializeMessage(It.IsAny<string>())).Returns(completeMessage);
-        ////            this.mockDataSerializer.Setup(ds => ds.DeserializePayload<TestRunCompletePayload>(completeMessage)).Returns(completePayload);
-        ////        });
+        [TestMethod]
+        public void StartTestRunShouldNotifyErrorLogMessageOnMessageReceivedIfExceptionIsThrown()
+        {
+            this.SetupExceptionOnMessageReceived();
+            this.SetupFakeCommunicationChannel();
 
-        ////    var waitHandle = new AutoResetEvent(false);
-        ////    mockHandler.Setup(mh => mh.HandleTestRunComplete(
-        ////        It.IsAny<TestRunCompleteEventArgs>(),
-        ////        It.IsAny<TestRunChangedEventArgs>(),
-        ////        It.IsAny<ICollection<AttachmentSet>>(),
-        ////        It.IsAny<ICollection<string>>())).Callback(() => waitHandle.Set());
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
 
-        ////    this.testRequestSender.StartTestRun(runCriteria, mockHandler.Object);
+            this.RaiseMessageReceivedEvent();
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleLogMessage(TestMessageLevel.Error, It.Is<string>(s => s.Contains("Dummy Message"))), Times.Once);
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleRawMessage("SerializedMessage"), Times.Once);
+        }
 
-        ////    waitHandle.WaitOne();
+        [TestMethod]
+        public void StartTestRunShouldNotifyExecutionCompleteOnMessageReceivedIfExceptionIsThrown()
+        {
+            this.SetupExceptionOnMessageReceived();
+            this.SetupFakeCommunicationChannel();
 
-        ////    this.mockServer.Verify(mc => mc.SendMessage(MessageType.StartTestExecutionWithSources, runCriteria), Times.Once);
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
 
-        ////    this.mockDataSerializer.Verify(ds => ds.DeserializeMessage(It.IsAny<string>()), Times.Exactly(2));
-        ////    mockHandler.Verify(mh => mh.LaunchProcessWithDebuggerAttached(payload), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleRawMessage(rawMessage), Times.Exactly(2));
-        ////    this.mockServer.Verify(mc => mc.SendMessage(MessageType.LaunchAdapterProcessWithDebuggerAttachedCallback, It.IsAny<object>()), Times.Once);
-        ////}
+            this.RaiseMessageReceivedEvent();
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleTestRunComplete(It.Is<TestRunCompleteEventArgs>(t => t.IsAborted), null, null, null), Times.Once);
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleRawMessage("SerializedAbortedPayload"), Times.Once);
+        }
 
-        ////[TestMethod]
-        ////public void StartTestRunShouldCallHandleTestRunCompleteOnRunCompletion()
-        ////{
-        ////    var mockHandler = new Mock<ITestRunEventsHandler>();
-        ////    var runCriteria = new TestRunCriteriaWithTests(null, null, null);
+        [TestMethod]
+        public void SendTestRunCancelShouldSendCancelTestRunMessage()
+        {
+            this.testRequestSender.SendTestRunCancel();
 
-        ////    var rawMessage = "ExecComplete";
-        ////    var message = new Message() { MessageType = MessageType.ExecutionComplete, Payload = null };
-        ////    var payload = new TestRunCompletePayload() { ExecutorUris = null, LastRunTests = null, RunAttachments = null, TestRunCompleteArgs = null };
+            this.mockDataSerializer.Verify(ds => ds.SerializeMessage(MessageType.CancelTestRun), Times.Once);
+            this.mockChannel.Verify(c => c.Send(It.IsAny<string>()), Times.Once);
+        }
 
-        ////    this.SetupReceiveRawMessageAsyncAndDeserializeMessageAndInitialize(rawMessage, message);
-        ////    this.mockDataSerializer.Setup(ds => ds.DeserializePayload<TestRunCompletePayload>(message)).Returns(payload);
+        [TestMethod]
+        public void SendTestRunAbortShouldSendAbortTestRunMessage()
+        {
+            this.testRequestSender.SendTestRunAbort();
 
-        ////    var waitHandle = new AutoResetEvent(false);
-        ////    mockHandler.Setup(mh => mh.HandleTestRunComplete(
-        ////        It.IsAny<TestRunCompleteEventArgs>(),
-        ////        It.IsAny<TestRunChangedEventArgs>(),
-        ////        It.IsAny<ICollection<AttachmentSet>>(),
-        ////        It.IsAny<ICollection<string>>())).Callback(() => waitHandle.Set());
+            this.mockDataSerializer.Verify(ds => ds.SerializeMessage(MessageType.AbortTestRun), Times.Once);
+            this.mockChannel.Verify(c => c.Send(It.IsAny<string>()), Times.Once);
+        }
 
-        ////    this.testRequestSender.StartTestRun(runCriteria, mockHandler.Object);
+        [TestMethod]
+        public void EndSessionShouldSendSessionEndMessage()
+        {
+            this.testRequestSender.EndSession();
 
-        ////    waitHandle.WaitOne();
-
-        ////    this.mockServer.Verify(mc => mc.SendMessage(MessageType.StartTestExecutionWithTests, runCriteria), Times.Once);
-        ////    this.mockDataSerializer.Verify(ds => ds.DeserializeMessage(rawMessage), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleTestRunComplete(null, null, null, null), Times.Once);
-        ////    mockHandler.Verify(mh => mh.HandleRawMessage(rawMessage), Times.Once);
-        ////}
+            this.mockDataSerializer.Verify(ds => ds.SerializeMessage(MessageType.SessionEnd), Times.Once);
+            this.mockChannel.Verify(c => c.Send(It.IsAny<string>()), Times.Once);
+        }
 
         ////[TestMethod]
         ////public void StartTestRunShouldCallHandleTestRunCompleteAndHandleLogMessageOnConnectionBreak()
@@ -474,6 +434,8 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
         ////    this.mockServer.Verify(mc => mc.SendMessage(MessageType.SessionEnd), Times.Never);
         ////}
 
+        #endregion
+
         private string SetupFakeCommunicationChannel(string connectionArgs = "123")
         {
             // Setup mock connected event and initialize communication channel
@@ -498,6 +460,22 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
                 .Returns(new Message { MessageType = messageType });
             this.mockDataSerializer.Setup(ds => ds.DeserializePayload<TPayload>(It.IsAny<Message>()))
                 .Returns(payload);
+        }
+
+        private void SetupExceptionOnMessageReceived()
+        {
+            // Serialize the exception message
+            this.mockDataSerializer
+                .Setup(ds => ds.SerializePayload(MessageType.TestMessage, It.Is<TestMessagePayload>(p => p.Message.Contains("Dummy Message"))))
+                .Returns("SerializedMessage");
+
+            // Serialize the execution complete
+            this.mockDataSerializer
+                .Setup(ds => ds.SerializePayload(MessageType.ExecutionComplete, It.Is<TestRunCompletePayload>(p => p.TestRunCompleteArgs.IsAborted)))
+                .Returns("SerializedAbortedPayload");
+
+            this.mockDataSerializer.Setup(ds => ds.DeserializeMessage(It.IsAny<string>()))
+                .Callback(() => throw new Exception("Dummy Message"));
         }
 
         private class TestableTestRequestSender : TestRequestSender2
