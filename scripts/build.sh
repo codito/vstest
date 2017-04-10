@@ -378,7 +378,7 @@ else
     invoke_build
 fi
 
-log "Build complete. $(( SECONDS - start ))"
+log "Build complete. Elapsed $(( SECONDS - start ))s."
 
 if [[ $? -ne 0 ]]; then
     exit 1

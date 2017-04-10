@@ -24,7 +24,7 @@ CI_BUILD=false
 VERBOSE=false
 PROJECT_NAME_PATTERNS=**Unit**csproj
 
-while [ $# > 0 ]; do
+while [ $# -gt 0 ]; do
     lowerI="$(echo ${1:-} | awk '{print tolower($0)}')"
     case $lowerI in
         -h | --help)
