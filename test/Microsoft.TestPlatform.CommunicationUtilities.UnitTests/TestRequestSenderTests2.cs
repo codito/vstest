@@ -91,12 +91,67 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
             this.mockChannel.Verify(c => c.Send(It.IsAny<string>()), Times.Once);
         }
 
-        // OnClientProcessExitShouldStopServer
-        // OnClientProcessExitShouldSendErrorMessageWithStderr
-        // OnClientProcessExitShouldSendRawMessageWithStderr
-        // ClientDisconnectedEventShouldAbortOperationIfOperationIsNotComplete
-        // ClientDisconnectedEventShouldSendErrorMessageIfOperationIsNotComplete
-        // ClientDisconnectedEventShouldSendRawMessageIfOperationIsNotComplete
+        [TestMethod]
+        public void OnClientProcessExitShouldSendErrorMessageWithStderr()
+        {
+            this.SetupFakeCommunicationChannel();
+            this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
+
+            this.testRequestSender.OnClientProcessExit("Dummy Message");
+
+            this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleLogMessage(TestMessageLevel.Error, "Dummy Message"), Times.Once);
+        }
+
+        [TestMethod]
+        public void OnClientProcessExitShouldSendRawMessageWithStderr()
+        {
+            this.SetupFakeCommunicationChannel();
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
+
+            this.testRequestSender.OnClientProcessExit("Dummy Message");
+
+            this.mockDataSerializer.Verify(ds => ds.SerializePayload(MessageType.TestMessage, It.Is<TestMessagePayload>(p => p.Message.Equals("Dummy Message"))), Times.Once);
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleRawMessage(It.IsAny<string>()), Times.Once);
+        }
+
+        [DataTestMethod]
+        [DataRow("")]
+        [DataRow(" ")]
+        [DataRow(null)]
+        public void OnClientProcessExitShouldNotSendErrorMessageIfStdErrIsEmpty(string stderr)
+        {
+            this.SetupFakeCommunicationChannel();
+            this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
+
+            this.testRequestSender.OnClientProcessExit(stderr);
+
+            this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleLogMessage(TestMessageLevel.Error, stderr), Times.Never);
+        }
+
+        [TestMethod]
+        public void OnClientProcessExitShouldNotSendErrorMessageIfOperationNotStarted()
+        {
+            this.SetupFakeCommunicationChannel();
+
+            this.testRequestSender.OnClientProcessExit("Dummy Message");
+
+            this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleLogMessage(TestMessageLevel.Error, "Dummy Message"), Times.Never);
+        }
+
+        [TestMethod]
+        public void OnClientProcessExitShouldNotSendRawMessageIfOperationNotStarted()
+        {
+            this.SetupFakeCommunicationChannel();
+
+            this.testRequestSender.OnClientProcessExit("Dummy Message");
+
+            this.mockDataSerializer.Verify(ds => ds.SerializePayload(MessageType.TestMessage, It.Is<TestMessagePayload>(p => p.Message.Equals("Dummy Message"))), Times.Never);
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleRawMessage(It.IsAny<string>()), Times.Never);
+        }
+
+        // ClientDisconnectedEventShouldNotAbortOperationIfOperationIsComplete
+        // ClientDisconnectedEventShouldNotSendErrorMessageIfOperationIsComplete
+        // ClientDisconnectedEventShouldNotSendRawMessageIfOperationIsComplete
         [TestMethod]
         public void EndSessionShouldNotSendSessionEndMessageIfClientDisconnected()
         {
@@ -230,6 +285,40 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
             this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
 
             this.RaiseMessageReceivedEvent();
+            this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleDiscoveryComplete(-1, null, true));
+        }
+
+        [TestMethod]
+        public void DiscoverTestShouldAbortDiscoveryIfClientDisconnected()
+        {
+            this.SetupFakeCommunicationChannel();
+            this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
+
+            this.RaiseClientDisconnectedEvent();
+
+            this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleLogMessage(TestMessageLevel.Error, It.Is<string>(s => s.Contains("Dummy Message"))));
+        }
+
+        [TestMethod]
+        public void DiscoverTestShouldNotifyRawMessageIfClientDisconnected()
+        {
+            this.SetupFakeCommunicationChannel();
+            this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
+
+            this.RaiseClientDisconnectedEvent();
+
+            this.mockDataSerializer.Verify(ds => ds.SerializePayload(MessageType.TestMessage, It.IsAny<TestMessagePayload>()), Times.Once);
+            this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleRawMessage(It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        public void DiscoverTestShouldNotifyHandleDiscoveryCompleteIfClientDisconnected()
+        {
+            this.SetupFakeCommunicationChannel();
+            this.testRequestSender.DiscoverTests(new DiscoveryCriteria(), this.mockDiscoveryEventsHandler.Object);
+
+            this.RaiseClientDisconnectedEvent();
+
             this.mockDiscoveryEventsHandler.Verify(eh => eh.HandleDiscoveryComplete(-1, null, true));
         }
 
@@ -389,6 +478,32 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
         }
 
         [TestMethod]
+        public void StartTestRunShouldNotifyErrorLogMessageOnClientDisconnected()
+        {
+            this.SetupExceptionMessageSerialize();
+            this.SetupFakeCommunicationChannel();
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
+
+            this.RaiseClientDisconnectedEvent();
+
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleLogMessage(TestMessageLevel.Error, It.Is<string>(s => s.Contains("Dummy Message"))), Times.Once);
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleRawMessage("SerializedMessage"), Times.Once);
+        }
+
+        [TestMethod]
+        public void StartTestRunShouldNotifyExecutionCompleteOnClientDisconnected()
+        {
+            this.SetupOperationAbortedPayload();
+            this.SetupFakeCommunicationChannel();
+            this.testRequestSender.StartTestRun(this.testRunCriteriaWithSources, this.mockExecutionEventsHandler.Object);
+
+            this.RaiseClientDisconnectedEvent();
+
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleTestRunComplete(It.Is<TestRunCompleteEventArgs>(t => t.IsAborted), null, null, null), Times.Once);
+            this.mockExecutionEventsHandler.Verify(eh => eh.HandleRawMessage("SerializedAbortedPayload"), Times.Once);
+        }
+
+        [TestMethod]
         public void SendTestRunCancelShouldSendCancelTestRunMessage()
         {
             this.SetupFakeCommunicationChannel();
@@ -446,17 +561,26 @@ namespace Microsoft.TestPlatform.CommunicationUtilities.UnitTests
                 .Returns(payload);
         }
 
-        private void SetupExceptionOnMessageReceived()
+        private void SetupExceptionMessageSerialize()
         {
             // Serialize the exception message
             this.mockDataSerializer
                 .Setup(ds => ds.SerializePayload(MessageType.TestMessage, It.Is<TestMessagePayload>(p => p.Message.Contains("Dummy Message"))))
                 .Returns("SerializedMessage");
+        }
 
-            // Serialize the execution complete
+        private void SetupOperationAbortedPayload()
+        {
+            // Serialize the execution aborted
             this.mockDataSerializer
                 .Setup(ds => ds.SerializePayload(MessageType.ExecutionComplete, It.Is<TestRunCompletePayload>(p => p.TestRunCompleteArgs.IsAborted)))
                 .Returns("SerializedAbortedPayload");
+        }
+
+        private void SetupExceptionOnMessageReceived()
+        {
+            this.SetupExceptionMessageSerialize();
+            this.SetupOperationAbortedPayload();
 
             this.mockDataSerializer.Setup(ds => ds.DeserializeMessage(It.IsAny<string>()))
                 .Callback(() => throw new Exception("Dummy Message"));

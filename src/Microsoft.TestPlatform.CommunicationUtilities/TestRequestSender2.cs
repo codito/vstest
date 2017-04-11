@@ -36,6 +36,8 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         // Set to 1 if Discovery/Execution is complete, i.e. complete handlers have been invoked
         private int operationCompleted;
 
+        private ITestMessageEventHandler messageEventHandler;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TestRequestSender2"/> class.
         /// </summary>
@@ -98,6 +100,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <inheritdoc />
         public void DiscoverTests(DiscoveryCriteria discoveryCriteria, ITestDiscoveryEventsHandler discoveryEventsHandler)
         {
+            this.messageEventHandler = discoveryEventsHandler;
             this.onDisconnected = (disconnectedEventArgs) =>
                 {
                     this.OnDiscoveryAbort(discoveryEventsHandler, disconnectedEventArgs.Error);
@@ -172,6 +175,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <inheritdoc />
         public void StartTestRun(TestRunCriteriaWithSources runCriteria, ITestRunEventsHandler eventHandler)
         {
+            this.messageEventHandler = eventHandler;
             this.onDisconnected = (disconnectedEventArgs) =>
                 {
                     this.OnTestRunAbort(eventHandler, disconnectedEventArgs.Error);
@@ -188,6 +192,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <inheritdoc />
         public void StartTestRun(TestRunCriteriaWithTests runCriteria, ITestRunEventsHandler eventHandler)
         {
+            this.messageEventHandler = eventHandler;
             this.onDisconnected = (disconnectedEventArgs) =>
                 {
                     this.OnTestRunAbort(eventHandler, disconnectedEventArgs.Error);
@@ -232,6 +237,12 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             // ClientDisconnected and process exit. We're sending a message to event handlers if
             // stdErr is not empty. Ideally, "whether a message is an error" should be provided to
             // this API.
+            EqtTrace.Info("TestRequestSender.OnClientProcessExit: Test host process exited.");
+            if (!string.IsNullOrWhiteSpace(stdError))
+            {
+                EqtTrace.Error("TestRequestSender.OnClientProcessExit: Test host stderr: " + stdError);
+                this.LogErrorMessage(stdError);
+            }
         }
 
         /// <inheritdoc />
@@ -313,19 +324,12 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             EqtTrace.Error("Server: TestExecution: Aborting test run because {0}", exception);
 
             var reason = string.Format(CommonResources.AbortedTestRun, exception?.Message);
-
-            // log console message to vstest console
-            testRunEventsHandler.HandleLogMessage(TestMessageLevel.Error, reason);
-
-            // log console message to vstest console wrapper
-            var testMessagePayload = new TestMessagePayload { MessageLevel = TestMessageLevel.Error, Message = reason };
-            var rawMessage = this.dataSerializer.SerializePayload(MessageType.TestMessage, testMessagePayload);
-            testRunEventsHandler.HandleRawMessage(rawMessage);
+            this.LogErrorMessage(reason);
 
             // notify test run abort to vstest console wrapper.
             var completeArgs = new TestRunCompleteEventArgs(null, false, true, exception, null, TimeSpan.Zero);
             var payload = new TestRunCompletePayload { TestRunCompleteArgs = completeArgs };
-            rawMessage = this.dataSerializer.SerializePayload(MessageType.ExecutionComplete, payload);
+            var rawMessage = this.dataSerializer.SerializePayload(MessageType.ExecutionComplete, payload);
             testRunEventsHandler.HandleRawMessage(rawMessage);
 
             // notify of a test run complete and bail out.
@@ -345,14 +349,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             EqtTrace.Error("Server: TestExecution: Aborting test discovery because {0}", exception);
 
             var reason = string.Format(CommonResources.AbortedTestDiscovery, exception?.Message);
-
-            // Log to vstest console
-            eventHandler.HandleLogMessage(TestMessageLevel.Error, reason);
-
-            // Log to vs ide test output
-            var testMessagePayload = new TestMessagePayload { MessageLevel = TestMessageLevel.Error, Message = reason };
-            var rawMessage = this.dataSerializer.SerializePayload(MessageType.TestMessage, testMessagePayload);
-            eventHandler.HandleRawMessage(rawMessage);
+            this.LogErrorMessage(reason);
 
             // Notify discovery abort to IDE test output
             var payload = new DiscoveryCompletePayload()
@@ -361,13 +358,30 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                 LastDiscoveredTests = null,
                 TotalTests = -1
             };
-            rawMessage = this.dataSerializer.SerializePayload(MessageType.DiscoveryComplete, payload);
+            var rawMessage = this.dataSerializer.SerializePayload(MessageType.DiscoveryComplete, payload);
             eventHandler.HandleRawMessage(rawMessage);
 
             // Complete discovery
             eventHandler.HandleDiscoveryComplete(-1, null, true);
 
             this.CleanupCommunicationIfProcessExit();
+        }
+
+        private void LogErrorMessage(string message)
+        {
+            if (this.messageEventHandler == null)
+            {
+                EqtTrace.Error("TestRequestSender.LogErrorMessage: Message event handler not set. Error: " + message);
+                return;
+            }
+
+            // Log to vstest console
+            this.messageEventHandler.HandleLogMessage(TestMessageLevel.Error, message);
+
+            // Log to vs ide test output
+            var testMessagePayload = new TestMessagePayload { MessageLevel = TestMessageLevel.Error, Message = message };
+            var rawMessage = this.dataSerializer.SerializePayload(MessageType.TestMessage, testMessagePayload);
+            this.messageEventHandler.HandleRawMessage(rawMessage);
         }
 
         private bool IsOperationComplete()
