@@ -31,6 +31,11 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 
         private EventHandler<MessageReceivedEventArgs> onMessageReceived;
 
+        private Action<DisconnectedEventArgs> onDisconnected;
+
+        // Set to 1 if Discovery/Execution is complete, i.e. complete handlers have been invoked
+        private int operationCompleted;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TestRequestSender2"/> class.
         /// </summary>
@@ -49,6 +54,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             this.communicationServer = server;
             this.dataSerializer = serializer;
             this.connected = new ManualResetEvent(false);
+            this.operationCompleted = 0;
         }
 
         /// <inheritdoc />
@@ -58,6 +64,14 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                 {
                     this.channel = args.Channel;
                     this.connected.Set();
+                };
+            this.communicationServer.ClientDisconnected += (sender, args) =>
+                {
+                    // If there's an disconnected event handler, call it
+                    if (this.onDisconnected != null)
+                    {
+                        this.onDisconnected(args);
+                    }
                 };
 
             // Server start returns the listener port
@@ -84,6 +98,10 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <inheritdoc />
         public void DiscoverTests(DiscoveryCriteria discoveryCriteria, ITestDiscoveryEventsHandler discoveryEventsHandler)
         {
+            this.onDisconnected = (disconnectedEventArgs) =>
+                {
+                    this.OnDiscoveryAbort(discoveryEventsHandler, disconnectedEventArgs.Error);
+                };
             this.onMessageReceived = (sender, args) =>
                 {
                     try
@@ -113,6 +131,8 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                                     discoveryCompletePayload.TotalTests,
                                     discoveryCompletePayload.LastDiscoveredTests,
                                     discoveryCompletePayload.IsAborted);
+
+                                this.SetOperationComplete();
                                 break;
                             case MessageType.TestMessage:
                                 var testMessagePayload = this.dataSerializer.DeserializePayload<TestMessagePayload>(
@@ -152,6 +172,10 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <inheritdoc />
         public void StartTestRun(TestRunCriteriaWithSources runCriteria, ITestRunEventsHandler eventHandler)
         {
+            this.onDisconnected = (disconnectedEventArgs) =>
+                {
+                    this.OnTestRunAbort(eventHandler, disconnectedEventArgs.Error);
+                };
             this.onMessageReceived = (sender, args) => this.OnExecutionMessageReceived(sender, args, eventHandler);
             this.channel.MessageReceived += this.onMessageReceived;
 
@@ -164,6 +188,10 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <inheritdoc />
         public void StartTestRun(TestRunCriteriaWithTests runCriteria, ITestRunEventsHandler eventHandler)
         {
+            this.onDisconnected = (disconnectedEventArgs) =>
+                {
+                    this.OnTestRunAbort(eventHandler, disconnectedEventArgs.Error);
+                };
             this.onMessageReceived = (sender, args) => this.OnExecutionMessageReceived(sender, args, eventHandler);
             this.channel.MessageReceived += this.onMessageReceived;
 
@@ -190,13 +218,20 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
         /// <inheritdoc />
         public void EndSession()
         {
-            this.channel.Send(this.dataSerializer.SerializeMessage(MessageType.SessionEnd));
+            if (!this.IsOperationComplete())
+            {
+                this.channel.Send(this.dataSerializer.SerializeMessage(MessageType.SessionEnd));
+            }
         }
 
         /// <inheritdoc />
         public void OnClientProcessExit(string stdError)
         {
-            throw new NotImplementedException();
+            // This method is called on test host exit. If test host has any errors, stdError is not
+            // empty. In case of test host crash, there is a race condition between
+            // ClientDisconnected and process exit. We're sending a message to event handlers if
+            // stdErr is not empty. Ideally, "whether a message is an error" should be provided to
+            // this API.
         }
 
         /// <inheritdoc />
@@ -241,6 +276,8 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                             testRunCompletePayload.LastRunTests,
                             testRunCompletePayload.RunAttachments,
                             testRunCompletePayload.ExecutorUris);
+
+                        this.SetOperationComplete();
                         break;
                     case MessageType.TestMessage:
                         var testMessagePayload = this.dataSerializer.DeserializePayload<TestMessagePayload>(message);
@@ -267,6 +304,12 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 
         private void OnTestRunAbort(ITestRunEventsHandler testRunEventsHandler, Exception exception)
         {
+            if (this.IsOperationComplete())
+            {
+                return;
+            }
+
+            this.SetOperationComplete();
             EqtTrace.Error("Server: TestExecution: Aborting test run because {0}", exception);
 
             var reason = string.Format(CommonResources.AbortedTestRun, exception?.Message);
@@ -293,6 +336,12 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
 
         private void OnDiscoveryAbort(ITestDiscoveryEventsHandler eventHandler, Exception exception)
         {
+            if (this.IsOperationComplete())
+            {
+                return;
+            }
+
+            this.SetOperationComplete();
             EqtTrace.Error("Server: TestExecution: Aborting test discovery because {0}", exception);
 
             var reason = string.Format(CommonResources.AbortedTestDiscovery, exception?.Message);
@@ -319,6 +368,17 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
             eventHandler.HandleDiscoveryComplete(-1, null, true);
 
             this.CleanupCommunicationIfProcessExit();
+        }
+
+        private bool IsOperationComplete()
+        {
+            return this.operationCompleted == 1;
+        }
+
+        private void SetOperationComplete()
+        {
+            // Complete the currently ongoing operation (Discovery/Execution)
+            Interlocked.CompareExchange(ref this.operationCompleted, 1, 0);
         }
 
         private void CleanupCommunicationIfProcessExit()
