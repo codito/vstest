@@ -164,7 +164,52 @@
       <VSIXSubPath>TestHost\x64</VSIXSubPath>
     </VsixSourceItem>
 
+    <!-- Exclude symbols -->
     <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(VsixInputFileLocation)\*.pdb" />
+
+    <!-- Exclude mstest/legacy components since they are already part of VS -->
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.AgentObject.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.AgentProcessManager.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Common.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.ControllerObject.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.ExecutionCommon.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.LoadTest.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.LoadTestFramework.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Resource.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.GenericTest.Adapter.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.GenericTest.ObjectModel.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.GenericTest.Tip.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.ManualTest.Adapter.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.ManualTest.ObjectModel.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.ManualTest.Tip.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.OrderedTest.Adapter.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.OrderedTest.ObjectModel.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.OrderedTest.Tip.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.UnitTest.AssemblyResolver.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Tip.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.Tips.WebLoadTest.Tip.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.TMI.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.QualityTools.WebTestFramework.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)QTAgent.exe" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)QTAgent32.exe" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)QTAgent32_35.exe" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)QTAgent32_40.exe" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)QTAgent_35.exe" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)QTAgent_40.exe" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)QTDCAgent.exe" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)QTDCAgent32.exe" />
+
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.IntelliTrace.Core.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.Coverage.Analysis.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.Coverage.Interop.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.Diagnostics.Utilities.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.Enterprise.AspNetHelper.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.ArchitectureTools.PEReader.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Microsoft.VisualStudio.TestPlatform.Fakes.dll" />
+    <VsixSourceItem Include="$(VsixInputFileLocation)\*.*" Exclude="$(ArtifactsDirectory)Extensions\Microsoft.VisualStudio.TraceDataCollector.dll" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.rtf">
