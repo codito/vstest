@@ -636,7 +636,7 @@ namespace Microsoft.VisualStudio.TestPlatform.ObjectModel
 
                             string testSessionTimeout = reader.ReadElementContentAsString();
                             long sessionTimeout;
-                            if (!long.TryParse(testSessionTimeout, out sessionTimeout) || sessionTimeout <= 0)
+                            if (!long.TryParse(testSessionTimeout, out sessionTimeout) || sessionTimeout < 0)
                             {
                                 throw new SettingsException(
                                     string.Format(
