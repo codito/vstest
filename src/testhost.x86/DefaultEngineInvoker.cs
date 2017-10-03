@@ -6,6 +6,10 @@ namespace Microsoft.VisualStudio.TestPlatform.TestHost
     using System;
     using System.Collections.Generic;
     using System.Net;
+#if NET45
+    using System.Threading;
+#endif
+
     using System.Threading.Tasks;
 
     using Microsoft.VisualStudio.TestPlatform.Common;
@@ -147,24 +151,28 @@ namespace Microsoft.VisualStudio.TestPlatform.TestHost
 
         private Task StartProcessingAsync(ITestRequestHandler requestHandler, ITestHostManagerFactory managerFactory)
         {
-            var task = new Task(
+#if NET45
+            var task = new Thread(
                 () =>
                     {
                         // Wait for the connection to the sender and start processing requests from sender
-                if (requestHandler.WaitForRequestSenderConnection(ClientListenTimeOut))
-                {
-                    requestHandler.ProcessRequests(managerFactory);
-                }
-                else
-                {
-                    EqtTrace.Info("DefaultEngineInvoker: RequestHandler timed out while connecting to the Sender.");
-                    throw new TimeoutException();
+                        if (requestHandler.WaitForRequestSenderConnection(ClientListenTimeOut))
+                        {
+                            requestHandler.ProcessRequests(managerFactory);
                         }
-                    },
-                TaskCreationOptions.LongRunning);
-
+                        else
+                        {
+                            EqtTrace.Info("DefaultEngineInvoker: RequestHandler timed out while connecting to the Sender.");
+                            throw new TimeoutException();
+                        }
+                    });
             task.Start();
-            return task;
+            task.IsBackground = false;          
+            task.Join();
+#endif
+
+
+            return Task.Delay(0);
         }
     }
 }
