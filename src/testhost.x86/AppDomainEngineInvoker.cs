@@ -3,7 +3,7 @@
 
 namespace Microsoft.VisualStudio.TestPlatform.TestHost
 {
-#if NET451
+#if NET45
     using Microsoft.VisualStudio.TestPlatform.ObjectModel;
     using Microsoft.VisualStudio.TestPlatform.CoreUtilities.Tracing;
 

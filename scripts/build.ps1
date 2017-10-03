@@ -72,7 +72,7 @@ $env:MSBUILD_VERSION = "15.0"
 Write-Verbose "Setup build configuration."
 $TPB_Solution = "TestPlatform.sln"
 $TPB_TestAssets_Solution = Join-Path $env:TP_ROOT_DIR "test\TestAssets\TestAssets.sln"
-$TPB_TargetFramework = "net451"
+$TPB_TargetFramework = "net45"
 $TPB_TargetFrameworkCore = "netcoreapp1.0"
 $TPB_TargetFrameworkCore20 = "netcoreapp2.0"
 $TPB_TargetFrameworkUap = "uap10.0"
@@ -202,6 +202,11 @@ function Invoke-Build
 
 function Publish-Package
 {
+    $TTPB_TargetFramework = $TPB_TargetFramework
+      if ($TPB_TargetFramework -eq "net45") {
+        $TTPB_TargetFramework = "net451"
+    }
+    #$TTPB_TargetFramework = "net451"
     $timer = Start-Timer
     Write-Log "Publish-Package: Started."
     $dotnetExe = Get-DotNetPath
@@ -212,7 +217,8 @@ function Publish-Package
     $packageProject = Join-Path $env:TP_PACKAGE_PROJ_DIR "package\package.csproj"
     $testHostProject = Join-Path $env:TP_ROOT_DIR "src\testhost\testhost.csproj"
     $testHostx86Project = Join-Path $env:TP_ROOT_DIR "src\testhost.x86\testhost.x86.csproj"
-    $testhostFullPackageDir = $(Join-Path $env:TP_OUT_DIR "$TPB_Configuration\Microsoft.TestPlatform.TestHost\$TPB_TargetFramework\$TPB_TargetRuntime")
+    #changed for testhost
+    $testhostFullPackageDir = $(Join-Path $env:TP_OUT_DIR "$TPB_Configuration\Microsoft.TestPlatform.TestHost\net45\$TPB_TargetRuntime")
     $testhostCorePackageDir = $(Join-Path $env:TP_OUT_DIR "$TPB_Configuration\Microsoft.TestPlatform.TestHost\$TPB_TargetFrameworkCore")
     $testhostNS1_4PackageDir = $(Join-Path $env:TP_OUT_DIR "$TPB_Configuration\Microsoft.TestPlatform.TestHost\$TPB_TargetFrameworkNS1_4")
     $vstestConsoleProject = Join-Path $env:TP_ROOT_DIR "src\vstest.console\vstest.console.csproj"
@@ -221,18 +227,18 @@ function Publish-Package
     Write-Log "Package: Publish src\package\package\package.csproj"
 
 
-    Publish-PackageInternal $packageProject $TPB_TargetFramework $fullCLRPackageDir
-    Publish-PackageInternal $packageProject $TPB_TargetFrameworkCore20 $coreCLR20PackageDir
+    Publish-PackageInternal $packageProject $TTPB_TargetFramework $fullCLRPackageDir
+    Publish-PackageInternal $packageProject $TTPB_TargetFrameworkCore20 $coreCLR20PackageDir
 
     # Publish vstest.console and datacollector exclusively because *.config/*.deps.json file is not getting publish when we are publishing aforementioned project through dependency.
     
     Write-Log "Package: Publish src\vstest.console\vstest.console.csproj"
-    Publish-PackageInternal $vstestConsoleProject $TPB_TargetFramework $fullCLRPackageDir
-    Publish-PackageInternal $vstestConsoleProject $TPB_TargetFrameworkCore20 $coreCLR20PackageDir
+    Publish-PackageInternal $vstestConsoleProject $TTPB_TargetFramework $fullCLRPackageDir
+    Publish-PackageInternal $vstestConsoleProject $TTPB_TargetFrameworkCore20 $coreCLR20PackageDir
 
     Write-Log "Package: Publish src\datacollector\datacollector.csproj"
-    Publish-PackageInternal $dataCollectorProject $TPB_TargetFramework $fullCLRPackageDir
-    Publish-PackageInternal $dataCollectorProject $TPB_TargetFrameworkCore20 $coreCLR20PackageDir
+    Publish-PackageInternal $dataCollectorProject $TTPB_TargetFramework $fullCLRPackageDir
+    Publish-PackageInternal $dataCollectorProject $TTPB_TargetFrameworkCore20 $coreCLR20PackageDir
 
     # Publish testhost
     
@@ -251,7 +257,7 @@ function Publish-Package
     Copy-Item $testhostFullPackageDir\* $fullDestDir -Force -recurse
 
     # Copy over the Full CLR built datacollector package assemblies to the Core CLR package folder along with testhost
-    Publish-PackageInternal $dataCollectorProject $TPB_TargetFramework $fullDestDir
+    Publish-PackageInternal $dataCollectorProject $TTPB_TargetFramework $fullDestDir
     
     New-Item -ItemType directory -Path $fullCLRPackageDir -Force | Out-Null
     Copy-Item $testhostFullPackageDir\* $fullCLRPackageDir -Force -recurse

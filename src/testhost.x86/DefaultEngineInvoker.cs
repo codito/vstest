@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.TestPlatform.TestHost
     using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions;
 
     internal class DefaultEngineInvoker :
-#if NET451
+#if NET45
         MarshalByRefObject,
 #endif
         IEngineInvoker
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.TestPlatform.TestHost
                 EqtTrace.InitializeVerboseTrace(logFile);
             }
 
-#if NET451
+#if NET45
             if (EqtTrace.IsInfoEnabled)
             {
                 var appConfigText = System.IO.File.ReadAllText(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);

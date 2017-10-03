@@ -1,0 +1,281 @@
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.580, 103278133159, vstest.console.exe, Using .Net Framework version:.NETFramework,Version=v3.5
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.580, 103278166178, vstest.console.exe, TestPluginCache: Discovering the extensions using extension path.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.580, 103278176640, vstest.console.exe, AssemblyResolver: Microsoft.TestPlatform.Extensions.BlameDataCollector: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.596, 103278202703, vstest.console.exe, AssemblyResolver: Microsoft.TestPlatform.Extensions.BlameDataCollector: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.596, 103278208763, vstest.console.exe, AssemblyResolver: Microsoft.TestPlatform.Extensions.EventLogCollector: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.596, 103278216629, vstest.console.exe, AssemblyResolver: Microsoft.TestPlatform.Extensions.EventLogCollector: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.596, 103278218407, vstest.console.exe, AssemblyResolver: Microsoft.TestPlatform.TestHostRuntimeProvider: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.596, 103278223805, vstest.console.exe, AssemblyResolver: Microsoft.TestPlatform.TestHostRuntimeProvider: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.596, 103278230557, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.CodedWebTestAdapter: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.596, 103278237147, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.CodedWebTestAdapter: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.611, 103278256084, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.GenericTestAdapter: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.611, 103278263167, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.GenericTestAdapter: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.611, 103278264571, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.OrderedTestAdapter: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.611, 103278270584, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.OrderedTestAdapter: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.611, 103278272002, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.TmiAdapter: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.611, 103278274529, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.TmiAdapter: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.643, 103278393870, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.Trx.TestLogger: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.643, 103278401964, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.Trx.TestLogger: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.658, 103278407710, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.658, 103278414851, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.658, 103278437495, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.WebTestAdapter: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.658, 103278444190, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.WebTestAdapter: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.658, 103278445853, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestTools.CppUnitTestFramework.ComInterfaces: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.658, 103278452446, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestTools.CppUnitTestFramework.ComInterfaces: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.658, 103278454100, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestTools.CppUnitTestFramework.CppUnitTestExtension: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.674, 103278460601, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestTools.CppUnitTestFramework.CppUnitTestExtension: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.674, 103278463594, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TraceDataCollector: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.674, 103278470206, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TraceDataCollector: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.674, 103278496954, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.UwpTestHostRuntimeProvider: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.674, 103278502094, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.UwpTestHostRuntimeProvider: Resolved assembly. 
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.690, 103278516517, vstest.console.exe, TestPluginCache: Discovered the extensions using extension path ''.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.690, 103278518408, vstest.console.exe, TestPluginCache: Discoverers are ''.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.690, 103278518780, vstest.console.exe, TestPluginCache: Executors are ''.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.690, 103278519101, vstest.console.exe, TestPluginCache: Setting providers are ''.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.690, 103278519395, vstest.console.exe, TestPluginCache: Loggers are ''.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.705, 103278593582, vstest.console.exe, RunTestsArgumentProcessor:Execute: Test run is starting.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.705, 103278593879, vstest.console.exe, RunTestsArgumentProcessor:Execute: Queuing Test run.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.705, 103278609610, vstest.console.exe, TestRequestManager.RunTests: run tests started.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.721, 103278632643, vstest.console.exe, AssemblyResolver: Microsoft.TestPlatform.TestHostRuntimeProvider, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.721, 103278634337, vstest.console.exe, AssemblyResolver: Microsoft.TestPlatform.TestHostRuntimeProvider, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.721, 103278635892, vstest.console.exe, TestPluginManager.CreateTestExtension: Attempting to load test extension: Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.Hosting.DefaultTestHostManager
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.721, 103278643728, vstest.console.exe, TestEngine: Initializing Parallel Execution as MaxCpuCount is set to: 1
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.721, 103278648754, vstest.console.exe, TestEngine.ShouldRunInNoIsolation: running test in process(inside vstest.console.exe process)
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.736, 103278692370, vstest.console.exe, TestRunRequest.ExecuteAsync: Creating test run request.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.736, 103278697000, vstest.console.exe, TestRunRequest.ExecuteAsync: Starting.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.736, 103278698923, vstest.console.exe, TestRunRequest.ExecuteAsync: Starting run with settings:TestRunCriteria:
+   KeepAlive=False,FrequencyOfRunStatsChangeEvent=10,RunStatsChangeEventTimeout=00:00:01.5000000,TestCaseFilter=,TestExecutorLauncher=
+   Settingsxml=<RunSettings>
+  <RunConfiguration>
+    <ResultsDirectory>E:\vsts\vstest\TestResults</ResultsDirectory>
+    <TargetPlatform>X86</TargetPlatform>
+    <TargetFrameworkVersion>.NETFramework,Version=v3.5</TargetFrameworkVersion>
+    <DesignMode>False</DesignMode>
+    <CollectSourceInformation>False</CollectSourceInformation>
+  </RunConfiguration>
+</RunSettings>
+
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.736, 103278699135, vstest.console.exe, TestRunRequest.ExecuteAsync: Wait for the first run request is over.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.736, 103278711061, vstest.console.exe, TestPluginCache: Updating loadOnlyWellKnownExtensions from False to False.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.736, 103278712346, vstest.console.exe, TestPluginCache: Using directories for assembly resolution 'C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug'.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.736, 103278712551, vstest.console.exe, TestPluginCache: Updated the available extensions to 'C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll'.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.736, 103278717098, vstest.console.exe, TestExecutorService: Loading the extensions
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.736, 103278720503, vstest.console.exe, TestPluginCache: Discovering the extensions using extension path.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.736, 103278730479, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278738117, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278752164, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolving assembly.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278753710, vstest.console.exe, CurrentDomain_AssemblyResolve: Resolving assembly 'Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278755173, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolving assembly.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278755688, vstest.console.exe, CurrentDomain_AssemblyResolve: Resolving assembly 'Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278755883, vstest.console.exe, CurrentDomainAssemblyResolve: Failed to resolve assembly 'Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278756463, vstest.console.exe, CurrentDomainAssemblyResolve: Failed to resolve assembly 'Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+TpTrace Warning: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278767897, vstest.console.exe, TestPluginDiscoverer: Failed to get types from assembly 'Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.  Skipping test extension scan for this assembly.  Error: System.Reflection.ReflectionTypeLoadException: Unable to load one or more of the requested types. Retrieve the LoaderExceptions property for more information.
+   at System.Reflection.RuntimeModule.GetTypes(RuntimeModule module)
+   at System.Reflection.RuntimeModule.GetTypes()
+   at System.Reflection.Assembly.GetTypes()
+   at Microsoft.VisualStudio.TestPlatform.Common.ExtensionFramework.TestPluginDiscoverer.GetTestExtensionsFromAssembly[TPluginInfo,TExtension](Assembly assembly, Dictionary`2 pluginInfos)
+TpTrace Warning: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278770039, vstest.console.exe, LoaderExceptions: System.IO.FileNotFoundException: Could not load file or assembly 'Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+File name: 'Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' ---> System.IO.FileNotFoundException: Could not load file or assembly 'Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+File name: 'Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
+   at System.Reflection.RuntimeAssembly._nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, Evidence assemblySecurity, RuntimeAssembly reqAssembly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.Assembly.Load(AssemblyName assemblyRef)
+   at Microsoft.VisualStudio.TestPlatform.Common.ExtensionFramework.TestPluginCache.CurrentDomainAssemblyResolve(Object sender, AssemblyResolveEventArgs args)
+   at Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.PlatformAssemblyResolver.AssemblyResolverEvent(Object sender, Object eventArgs)
+   at System.AppDomain.OnAssemblyResolveEvent(RuntimeAssembly assembly, String assemblyFullName)
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+
+
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278770687, vstest.console.exe, TestPluginCache: Discovered the extensions using extension path 'C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll'.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278770874, vstest.console.exe, TestPluginCache: Discoverers are ''.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278771042, vstest.console.exe, TestPluginCache: Executors are 'executor://CodedWebTestAdapter/v1,executor://GenericTestAdapter/v1,executor://OrderedTestAdapter/v1,executor://MSTestAdapter/v1,executor://WebTestAdapter/v1,executor://CppUnitTestExecutor/v1,executor://UAPCppExecutorIdentifier'.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278771194, vstest.console.exe, TestPluginCache: Setting providers are ''.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278771322, vstest.console.exe, TestPluginCache: Loggers are ''.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278776109, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.CodedWebTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278777831, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.CodedWebTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278778291, vstest.console.exe, TestPluginManager.CreateTestExtension: Attempting to load test extension: Microsoft.VisualStudio.TestPlatform.Extensions.CodedWebTestAdapter.CodedWebTestExecutor
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278778638, vstest.console.exe, TestExecutorExtensionManager: Loading executor Microsoft.VisualStudio.TestPlatform.Extensions.CodedWebTestAdapter.CodedWebTestExecutor
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278780348, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.GenericTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278781977, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.GenericTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278782402, vstest.console.exe, TestPluginManager.CreateTestExtension: Attempting to load test extension: Microsoft.VisualStudio.TestPlatform.Extensions.GenericTestAdapter.GenericTestExecutor
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278782727, vstest.console.exe, TestExecutorExtensionManager: Loading executor Microsoft.VisualStudio.TestPlatform.Extensions.GenericTestAdapter.GenericTestExecutor
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278784405, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.OrderedTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278786148, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.OrderedTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278786586, vstest.console.exe, TestPluginManager.CreateTestExtension: Attempting to load test extension: Microsoft.VisualStudio.TestPlatform.Extensions.OrderedTestAdapter.OrderedTestExecutor
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278786932, vstest.console.exe, TestExecutorExtensionManager: Loading executor Microsoft.VisualStudio.TestPlatform.Extensions.OrderedTestAdapter.OrderedTestExecutor
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.752, 103278788668, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278790334, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278790668, vstest.console.exe, TestPluginManager.CreateTestExtension: Attempting to load test extension: Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.MSTestExecutor
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278802200, vstest.console.exe, TestExecutorExtensionManager: Loading executor Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.MSTestExecutor
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278804014, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.WebTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278805865, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestPlatform.Extensions.WebTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278806147, vstest.console.exe, TestPluginManager.CreateTestExtension: Attempting to load test extension: Microsoft.VisualStudio.TestPlatform.Extensions.WebTestAdapter.WebTestExecutor
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278806480, vstest.console.exe, TestExecutorExtensionManager: Loading executor Microsoft.VisualStudio.TestPlatform.Extensions.WebTestAdapter.WebTestExecutor
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278808218, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestTools.CppUnitTestFramework.CppUnitTestExtension, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolving assembly.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278809973, vstest.console.exe, AssemblyResolver: Microsoft.VisualStudio.TestTools.CppUnitTestFramework.CppUnitTestExtension, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: Resolved assembly. 
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278810311, vstest.console.exe, TestPluginManager.CreateTestExtension: Attempting to load test extension: Microsoft.VisualStudio.TestTools.CppUnitTestFramework.CppUnitTestExtension.TestExecutor
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278811513, vstest.console.exe, TestExecutorExtensionManager: Loading executor Microsoft.VisualStudio.TestTools.CppUnitTestFramework.CppUnitTestExtension.TestExecutor
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278811778, vstest.console.exe, TestPluginManager.CreateTestExtension: Attempting to load test extension: Microsoft.VisualStudio.TestTools.CppUnitTestFramework.CppUnitTestExtension.DummyUWPCppTestExecutor
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278812056, vstest.console.exe, TestExecutorExtensionManager: Loading executor Microsoft.VisualStudio.TestTools.CppUnitTestFramework.CppUnitTestExtension.DummyUWPCppTestExecutor
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278812219, vstest.console.exe, TestExecutorService: Loaded the executors
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278814516, vstest.console.exe, TestPluginCache: Discovering the extensions using extension path.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278818811, vstest.console.exe, TestPluginCache: Discovered the extensions using extension path 'C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll'.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278819017, vstest.console.exe, TestPluginCache: Discoverers are ''.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278819169, vstest.console.exe, TestPluginCache: Executors are 'executor://CodedWebTestAdapter/v1,executor://GenericTestAdapter/v1,executor://OrderedTestAdapter/v1,executor://MSTestAdapter/v1,executor://WebTestAdapter/v1,executor://CppUnitTestExecutor/v1,executor://UAPCppExecutorIdentifier'.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278819328, vstest.console.exe, TestPluginCache: Setting providers are 'MSTest'.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278819472, vstest.console.exe, TestPluginCache: Loggers are ''.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278823117, vstest.console.exe, TestPluginManager.CreateTestExtension: Attempting to load test extension: Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.MSTestSettingsProvider
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278823446, vstest.console.exe, SettingsProviderExtensionManager: Loading settings provider Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.MSTestSettingsProvider
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278823623, vstest.console.exe, TestExecutorService: Loaded the settings providers
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278823759, vstest.console.exe, TestExecutorService: Loaded the extensions
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278826355, vstest.console.exe, TestRunRequest.ExecuteAsync: Started.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:38.768, 103278827997, vstest.console.exe, TestRunRequest.WaitForCompletion: Waiting with timeout -1.
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:38.783, 103278859760, vstest.console.exe, TestDiscoveryManager: Discovering tests from sources C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\UTnet3.5.dll
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.783, 103278863516, vstest.console.exe, TestPluginCache: Discovering the extensions using extension path.
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.783, 103278869925, vstest.console.exe, TestPluginDiscoverer: Failed to get types from assembly 'Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.  Skipping test extension scan for this assembly.  Error: System.Reflection.ReflectionTypeLoadException: Unable to load one or more of the requested types. Retrieve the LoaderExceptions property for more information.
+   at System.Reflection.RuntimeModule.GetTypes(RuntimeModule module)
+   at System.Reflection.RuntimeModule.GetTypes()
+   at System.Reflection.Assembly.GetTypes()
+   at Microsoft.VisualStudio.TestPlatform.Common.ExtensionFramework.TestPluginDiscoverer.GetTestExtensionsFromAssembly[TPluginInfo,TExtension](Assembly assembly, Dictionary`2 pluginInfos)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.783, 103278870301, vstest.console.exe, LoaderExceptions: System.IO.FileNotFoundException: Could not load file or assembly 'Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+File name: 'Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
+   at System.Reflection.RuntimeAssembly._nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, Evidence assemblySecurity, RuntimeAssembly reqAssembly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.Assembly.Load(AssemblyName assemblyRef)
+   at Microsoft.VisualStudio.TestPlatform.Common.ExtensionFramework.TestPluginCache.CurrentDomainAssemblyResolve(Object sender, AssemblyResolveEventArgs args)
+   at Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.PlatformAssemblyResolver.AssemblyResolverEvent(Object sender, Object eventArgs)
+   at System.AppDomain.OnAssemblyResolveEvent(RuntimeAssembly assembly, String assemblyFullName)
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.783, 103278870856, vstest.console.exe, TestPluginCache: Discovered the extensions using extension path 'C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll'.
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.783, 103278871070, vstest.console.exe, TestPluginCache: Discoverers are 'Microsoft.VisualStudio.TestPlatform.Extensions.CodedWebTestAdapter.CodedWebTestDiscoverer, Microsoft.VisualStudio.TestPlatform.Extensions.CodedWebTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a,Microsoft.VisualStudio.TestPlatform.Extensions.GenericTestAdapter.GenericTestDiscoverer, Microsoft.VisualStudio.TestPlatform.Extensions.GenericTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a,Microsoft.VisualStudio.TestPlatform.Extensions.OrderedTestAdapter.OrderedTestDiscoverer, Microsoft.VisualStudio.TestPlatform.Extensions.OrderedTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a,Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.MSTestDiscoverer, Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a,Microsoft.VisualStudio.TestPlatform.Extensions.WebTestAdapter.WebTestDiscoverer, Microsoft.VisualStudio.TestPlatform.Extensions.WebTestAdapter, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a,Microsoft.VisualStudio.TestTools.CppUnitTestFramework.CppUnitTestExtension.TestDiscoverer, Microsoft.VisualStudio.TestTools.CppUnitTestFramework.CppUnitTestExtension, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.783, 103278871255, vstest.console.exe, TestPluginCache: Executors are 'executor://CodedWebTestAdapter/v1,executor://GenericTestAdapter/v1,executor://OrderedTestAdapter/v1,executor://MSTestAdapter/v1,executor://WebTestAdapter/v1,executor://CppUnitTestExecutor/v1,executor://UAPCppExecutorIdentifier'.
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.783, 103278871404, vstest.console.exe, TestPluginCache: Setting providers are 'MSTest'.
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.783, 103278871533, vstest.console.exe, TestPluginCache: Loggers are ''.
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.783, 103278880793, vstest.console.exe, BaseRunTests.RunTestInternalWithExecutors: Running tests for executor://CodedWebTestAdapter/v1
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:38.799, 103278953699, vstest.console.exe, TmiBridge: isPortableMode False
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.815, 103278991373, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StartDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StartDetouring>b__5_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.815, 103278995667, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StopDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StopDetouring>b__6_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:38.815, 103278996318, vstest.console.exe, TmiBridge: pathToPublicAssemblies C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\PublicAssemblies
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.815, 103278998034, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StartDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StartDetouring>b__5_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.815, 103279000112, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StopDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StopDetouring>b__6_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:38.815, 103279000347, vstest.console.exe, TmiBridge: pathToPrivateAssemblies C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\PrivateAssemblies
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.815, 103279001769, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StartDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StartDetouring>b__5_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.815, 103279004202, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StopDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StopDetouring>b__6_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.815, 103279005744, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StartDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StartDetouring>b__5_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.815, 103279007972, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StopDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StopDetouring>b__6_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:38.815, 103279008256, vstest.console.exe, TmiBridge: Setting an environment variable __UNITTESTEXPLORER_VSINSTALLPATH__ to value C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.830, 103279011552, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StartDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StartDetouring>b__5_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.830, 103279013702, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StopDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StopDetouring>b__6_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.830, 103279015191, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StartDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StartDetouring>b__5_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.830, 103279017200, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StopDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StopDetouring>b__6_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.861, 103279127479, vstest.console.exe, CodedWebTestAdapter: PruningSources: Ignored source C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\UTnet3.5.dll as it does not refer to CodedWebTestFramework dll.
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.861, 103279127818, vstest.console.exe, CodedWebTestExecutor: Running all tests, no web tests or coded web tests were found in the provided sources C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\UTnet3.5.dll.
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.861, 103279129210, vstest.console.exe, BaseRunTests.RunTestInternalWithExecutors: Completed running tests for executor://CodedWebTestAdapter/v1
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.861, 103279129438, vstest.console.exe, BaseRunTests.RunTestInternalWithExecutors: Running tests for executor://MSTestAdapter/v1
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:38.861, 103279138085, vstest.console.exe, MixedModeExecutor: Started doing deployment for source C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\UTnet3.5.dll.
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:38.861, 103279164222, vstest.console.exe, AppDomainIsolatedHost: Creating app-domain for source C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\UTnet3.5.dll with application base path C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug.
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:38.877, 103279190478, vstest.console.exe, AppDomainIsolatedHost: Not running in portable mode
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.877, 103279192536, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StartDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StartDetouring>b__5_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.877, 103279194775, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StopDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StopDetouring>b__6_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.877, 103279196266, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StartDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StartDetouring>b__5_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:38.877, 103279198392, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StopDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StopDetouring>b__6_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:38.877, 103279198624, vstest.console.exe, AppDomainIsolatedHost: Creating assembly resolver with resolution paths C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug,C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\PublicAssemblies,C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\PrivateAssemblies.
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:38.983, 103279580064, vstest.console.exe, AppDomainIsolatedHost: assemblyenumerator location: E:\vsts\vstest\artifacts\Debug\net45\win7-x64\Extensions\Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.dll , fullname: Microsoft.VisualStudio.TestPlatform.MSTestFramework.AssemblyResolver 
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:38.983, 103279589356, vstest.console.exe, AppDomainIsolatedHost: resolver type: Microsoft.VisualStudio.TestPlatform.MSTestFramework.AssemblyResolver , resolve type assembly: E:\vsts\vstest\artifacts\Debug\net45\win7-x64\Extensions\Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.dll 
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.030, 103279721122, vstest.console.exe, MSTestDiscoverer: Found 1 tests from source C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\UTnet3.5.dll
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:39.046, 103279774746, vstest.console.exe, MixedModeExecutor: Deployment done for all the sources C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\UTnet3.5.dll.
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:39.046, 103279790779, vstest.console.exe, Created the adapter.
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.046, 103279792000, vstest.console.exe, MSTestExecutor: Changed the working directory to C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.046, 103279801159, vstest.console.exe, UnitTestAdapter: Application base path for testSource C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\UTnet3.5.dll is C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug.
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:39.061, 103279822541, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StartDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StartDetouring>b__5_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:39.061, 103279824939, vstest.console.exe, RegistryDetourHelper: Error while invoking registry detour action: System.DllNotFoundException: Unable to load DLL 'VsRegistryDetour.dll': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.NativeMethods.StopDetouring()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.<>c.<StopDetouring>b__6_0()
+   at Microsoft.VisualStudio.TestPlatform.Extensions.VSTestIntegration.Framework.RegistryDetourHelper.InvokeDetourAction(Action action)
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:39.155, 103280203517, vstest.console.exe, Created unit-test runner C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\UTnet3.5.dll
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:39.171, 103280224425, vstest.console.exe, Executing test TestMethod1
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:39.218, 103280376876, vstest.console.exe, Executed test TestMethod1
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.218, 103280377257, vstest.console.exe, Executing cleanup methods.
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.218, 103280381991, vstest.console.exe, Executed cleanup methods.
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:39.218, 103280399980, vstest.console.exe, InProgressTests is null
+TpTrace Warning: 0 : 3288, 4, 2017/09/13, 18:20:39.218, 103280403044, vstest.console.exe, TestRunCache: No test found corresponding to testResult 'TestMethod1  Passed' in inProgress list.
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.218, 103280403947, vstest.console.exe, MSTestExecutor: Changed the working directory to E:\vsts\vstest
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.218, 103280404666, vstest.console.exe, UnitTestAdapter: Disposing.
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.218, 103280422026, vstest.console.exe, UnitTestAdapter: Disposed.
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.218, 103280422262, vstest.console.exe, Executed tests belonging to source C:\Users\chrajurk\Source\Repos\UTnet3.5\UTnet3.5\bin\Debug\UTnet3.5.dll
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.218, 103280424436, vstest.console.exe, Deleting deployment directory E:\vsts\vstest\TestResults\Deploy_chrajurk 2017-09-13 18_20_39
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.233, 103280426671, vstest.console.exe, Deleted deployment directory E:\vsts\vstest\TestResults\Deploy_chrajurk 2017-09-13 18_20_39
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:39.233, 103280426975, vstest.console.exe, BaseRunTests.RunTestInternalWithExecutors: Completed running tests for executor://MSTestAdapter/v1
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:39.233, 103280427159, vstest.console.exe, BaseRunTests.RunTestInternalWithExecutors: Running tests for executor://CppUnitTestExecutor/v1
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:39.233, 103280458199, vstest.console.exe, BaseRunTests.RunTestInternalWithExecutors: Completed running tests for executor://CppUnitTestExecutor/v1
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:39.233, 103280470277, vstest.console.exe, TestRunRequest:TestRunComplete: Starting. IsAborted:False IsCanceled:False.
+TpTrace Information: 0 : 3288, 4, 2017/09/13, 18:20:39.249, 103280500211, vstest.console.exe, TestRunRequest:TestRunComplete: Completed.
+TpTrace Verbose: 0 : 3288, 4, 2017/09/13, 18:20:39.249, 103280501138, vstest.console.exe, BaseRunTests.RunTests: Run is complete.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:39.249, 103280503592, vstest.console.exe, TestRunRequest.Dispose: Starting.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:39.249, 103280503849, vstest.console.exe, TestRunRequest.Dispose: Completed.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:39.249, 103280503997, vstest.console.exe, TestRequestManager.RunTests: run tests completed, sucessful: True.
+TpTrace Information: 0 : 3288, 1, 2017/09/13, 18:20:39.249, 103280504306, vstest.console.exe, RunTestsArgumentProcessor:Execute: Test run is completed.
+TpTrace Verbose: 0 : 3288, 1, 2017/09/13, 18:20:39.249, 103280504617, vstest.console.exe, Executor.Execute: Exiting with exit code of 0

@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.TestPlatform.Utilities
 
             // Todo: There isn't an equivalent API to SecurityElement.Escape in Core yet. 
             // So trusting that the XML is always valid for now.
-#if NET451
+#if NET45
             var secureInnerXml = SecurityElement.Escape(innerXml);
 #else
             var secureInnerXml = innerXml;
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.TestPlatform.Utilities
             }
             else if (!string.IsNullOrEmpty(innerXml))
             {
-#if NET451
+#if NET45
                 childNodeNavigator.InnerXml = secureInnerXml;
 #else
                 // .Net Core has a bug where calling childNodeNavigator.InnerXml throws an XmlException with "Data at the root level is invalid".

@@ -3,7 +3,7 @@
 
 namespace Microsoft.VisualStudio.TestPlatform.ObjectModel.Utilities
 {
-#if NET451
+#if NET45
     using System;
     using System.Diagnostics;
     using System.IO;

@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.TestPlatform.Common.Logging
     using System.Collections.ObjectModel;
     using System.Diagnostics;
 
-#if NET451
+#if NET45
     using System.Configuration;
 #endif
 
@@ -376,7 +376,7 @@ namespace Microsoft.VisualStudio.TestPlatform.Common.Logging
         private static bool IsBoundsEnabledOnLoggerEventQueue()
         {
             bool enableBounds;
-#if NET451
+#if NET45
             string enableBoundsOnEventQueueIsDefined = ConfigurationManager.AppSettings[TestPlatformDefaults.EnableBoundsOnLoggerEventQueue];
 #else
             string enableBoundsOnEventQueueIsDefined = null;
@@ -422,7 +422,7 @@ namespace Microsoft.VisualStudio.TestPlatform.Common.Logging
         private int GetSetting(string appSettingKey, int defaultValue)
         {
             int value;
-#if NET451
+#if NET45
             string appSettingValue = ConfigurationManager.AppSettings[appSettingKey];
 #else
             string appSettingValue = null;

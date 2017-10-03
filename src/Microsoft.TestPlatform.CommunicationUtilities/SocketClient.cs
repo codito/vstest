@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CommunicationUtilities
                 this.stopped = true;
 
                 // Close the client and dispose the underlying stream
-#if NET451
+#if NET45
                 // tcpClient.Close() calls tcpClient.Dispose().
                 this.tcpClient?.Close();
 #else
